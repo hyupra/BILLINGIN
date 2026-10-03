@@ -6,6 +6,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// ponytail: Fortify redirects here after login (config/fortify.php 'home').
+// No real dashboard exists until S6 — send authenticated users to the
+// closest thing we have (the static mockup) instead of a 404. Replace with
+// a real dashboard controller/route once S6 builds it.
+Route::get('/home', function () {
+    return redirect('/mockup/dashboard/overview');
+})->middleware('auth')->name('home');
+
 /*
 |--------------------------------------------------------------------------
 | Static design mockups (no backend wiring)
