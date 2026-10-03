@@ -2,8 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
+// ponytail: redirect to the landing mockup instead of Laravel's default
+// welcome page now that one exists (QA v2 C-04). Swap for a real
+// marketing-controller route once the Frontend sprint builds one.
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/mockup/landing');
 });
 
 // ponytail: Fortify redirects here after login (config/fortify.php 'home').
@@ -59,6 +62,23 @@ Route::get('/mockup', function () {
     ]]);
 });
 
+// QA v2 S-01: the partner dashboard represents an authenticated area and
+// was reachable with zero login (same static mockup data for anyone who
+// found the URL). Registered before the general /mockup/{path} catch-all
+// below so it takes priority for anything under dashboard/.
+Route::get('/mockup/dashboard/{path}', function (string $path) {
+    $view = 'mockup.dashboard.'.str_replace('/', '.', $path);
+    abort_unless(view()->exists($view), 404);
+
+    return view($view);
+})->middleware('auth')->where('path', '.*');
+
+// QA v2 C-02: an unknown path previously hit view()'s own
+// InvalidArgumentException, rendering as a 500 with a full stack trace
+// (file paths, framework/PHP versions) instead of a clean 404.
 Route::get('/mockup/{path}', function (string $path) {
-    return view('mockup.'.str_replace('/', '.', $path));
+    $view = 'mockup.'.str_replace('/', '.', $path);
+    abort_unless(view()->exists($view), 404);
+
+    return view($view);
 })->where('path', '.*');

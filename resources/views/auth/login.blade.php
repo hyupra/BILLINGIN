@@ -54,7 +54,7 @@
                 <div>
                     <div class="flex items-center justify-between mb-1.5">
                         <label for="password" class="block text-sm font-medium">Password</label>
-                        <a href="#" class="text-sm text-indigo-400 hover:text-indigo-300">Lupa password?</a>
+                        <a href="/mockup/forgot-password" class="text-sm text-indigo-400 hover:text-indigo-300">Lupa password?</a>
                     </div>
                     <input id="password" name="password" type="password" required
                         placeholder="Masukkan password"
@@ -72,7 +72,7 @@
                 </button>
 
                 <p class="text-center text-sm text-gray-400">
-                    Belum punya akun? <a href="#" class="text-indigo-400 hover:text-indigo-300 underline">Daftar gratis 3 hari</a>
+                    Belum punya akun? <a href="/mockup/register" class="text-indigo-400 hover:text-indigo-300 underline">Daftar gratis 3 hari</a>
                 </p>
             </form>
         </div>
