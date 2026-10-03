@@ -1,0 +1,64 @@
+services:
+  nginx:
+    image: nginx:stable
+    ports: ["8080:80"]
+    volumes:
+      - ./docker/nginx/app.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on: [app]
+
+  app:
+    build: .
+    command: php-fpm
+    env_file: .env
+    depends_on:
+      mssql: { condition: service_healthy }
+      redis: { condition: service_started }
+    healthcheck:
+      test: ["CMD", "php", "artisan", "about"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  worker:
+    build: .
+    command: php artisan horizon
+    env_file: .env
+    depends_on:
+      mssql: { condition: service_healthy }
+      redis: { condition: service_started }
+
+  scheduler:
+    build: .
+    command: php artisan schedule:work
+    env_file: .env
+    depends_on:
+      mssql: { condition: service_healthy }
+      redis: { condition: service_started }
+
+  redis:
+    image: redis:7
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes: ["redis-data:/data"]
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+      MSSQL_SA_PASSWORD_FILE: /run/secrets/mssql_sa_password
+    ports: ["1433:1433"]
+    volumes: ["mssql-data:/var/opt/mssql"]
+    secrets: [mssql_sa_password]
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$(cat /run/secrets/mssql_sa_password)\" -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+secrets:
+  mssql_sa_password:
+    file: ./.secrets/mssql_sa_password.txt
+
+volumes:
+  redis-data: {}
+  mssql-data: {}
