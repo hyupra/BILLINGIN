@@ -2,24 +2,24 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
      * Seed the application's database.
+     *
+     * WithoutModelEvents is deliberately not used here: BelongsToTenant
+     * relies on the `creating` model event to auto-fill tenant_id, and
+     * disabling events would silently break that for any future seeder
+     * that leans on it instead of setting tenant_id explicitly.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            RolePermissionSeeder::class,
+            SuperadminSeeder::class,
+            TenantSeeder::class,
         ]);
     }
 }
