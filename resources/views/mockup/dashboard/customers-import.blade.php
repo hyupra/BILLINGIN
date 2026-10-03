@@ -3,7 +3,7 @@
 @section('title', 'Impor Pelanggan — BILLINGIN')
 @section('active', 'customers')
 @section('back-link')
-    <a href="/mockup/dashboard/pelanggan" class="text-indigo-400 hover:text-indigo-300">&larr; Kembali ke Pelanggan</a>
+    <a href="/mockup/dashboard/customers" class="text-indigo-400 hover:text-indigo-300">&larr; Kembali ke Pelanggan</a>
 @endsection
 @section('page-title', 'Impor Pelanggan dari CSV')
 

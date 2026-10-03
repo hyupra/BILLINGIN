@@ -56,8 +56,12 @@
                 @foreach ($bars as $bar)
                     <div class="flex-1 flex flex-col items-center gap-2">
                         <span class="text-sm font-semibold">{{ number_format($bar['value'], 1, ',', '.') }}</span>
-                        <div class="w-full rounded-t-md {{ !empty($bar['current']) ? 'bg-indigo-400/70' : 'bg-indigo-600' }}"
-                             style="height: {{ ($bar['value'] / $max) * 100 }}%"></div>
+                        {{-- fixed-height track so the percentage-height bar below has a real
+                             pixel height to size against (a % height needs a sized parent) --}}
+                        <div class="w-full h-32 flex items-end">
+                            <div class="w-full rounded-t-md {{ !empty($bar['current']) ? 'bg-indigo-400/70' : 'bg-indigo-600' }}"
+                                 style="height: {{ ($bar['value'] / $max) * 100 }}%"></div>
+                        </div>
                         <span class="text-gray-500 text-xs text-center">{{ $bar['label'] }}</span>
                     </div>
                 @endforeach
@@ -87,7 +91,7 @@
             <div class="rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-300 mb-4">
                 ⚠ 9 pelanggan akan terisolir pada 15 Okt jika belum membayar.
             </div>
-            <a href="/mockup/dashboard/tagihan" class="mt-auto w-full text-center h-11 flex items-center justify-center rounded-lg border border-white/15 font-semibold hover:bg-white/5">
+            <a href="/mockup/dashboard/invoices" class="mt-auto w-full text-center h-11 flex items-center justify-center rounded-lg border border-white/15 font-semibold hover:bg-white/5">
                 Lihat Tagihan
             </a>
         </div>
@@ -97,7 +101,7 @@
     <div class="rounded-xl border border-white/10 bg-[#0B0F24] overflow-hidden">
         <div class="flex items-center justify-between px-6 py-4 border-b border-white/10">
             <h2 class="font-bold">Transaksi terbaru</h2>
-            <a href="/mockup/dashboard/pembayaran" class="text-indigo-400 hover:text-indigo-300 text-sm">Lihat semua</a>
+            <a href="/mockup/dashboard/payments" class="text-indigo-400 hover:text-indigo-300 text-sm">Lihat semua</a>
         </div>
         <div class="divide-y divide-white/10">
             @foreach ([

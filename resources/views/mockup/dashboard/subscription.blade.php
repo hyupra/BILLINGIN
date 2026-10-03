@@ -17,8 +17,8 @@
         </div>
         <div class="space-y-2 text-sm">
             <div class="flex items-center justify-between">
-                <span class="text-gray-300">150 pelanggan &times; Rp 350</span>
-                <span>Rp 52.500</span>
+                <span class="text-gray-300">128 pelanggan &times; Rp 350</span>
+                <span>Rp 44.800</span>
             </div>
             <div class="flex items-center justify-between">
                 <span class="text-gray-300">2 router &times; Rp 5.000</span>
@@ -27,7 +27,7 @@
         </div>
         <div class="border-t border-white/10 mt-4 pt-4 flex items-center justify-between">
             <span class="font-bold">Total per bulan</span>
-            <span class="text-xl font-bold">Rp 62.500</span>
+            <span class="text-xl font-bold">Rp 54.800</span>
         </div>
         <p class="text-gray-500 text-xs mt-3">Tarif contoh. Tagihan mengikuti jumlah pelanggan aktif dan router terdaftar.</p>
     </div>
@@ -40,7 +40,7 @@
                     <input type="radio" name="period" checked class="w-4 h-4 text-indigo-500 bg-[#0F1428] border-white/20 focus:ring-indigo-500">
                     <span>
                         <span class="block font-semibold">1 bulan</span>
-                        <span class="block text-gray-400 text-sm">Rp 62.500</span>
+                        <span class="block text-gray-400 text-sm">Rp 54.800</span>
                     </span>
                 </span>
             </label>
@@ -49,12 +49,12 @@
                     <input type="radio" name="period" class="w-4 h-4 text-indigo-500 bg-[#0F1428] border-white/20 focus:ring-indigo-500">
                     <span>
                         <span class="block font-semibold">3 bulan</span>
-                        <span class="block text-gray-400 text-sm">Rp 187.500 &middot; tanpa diskon pada contoh ini</span>
+                        <span class="block text-gray-400 text-sm">Rp 164.400 &middot; tanpa diskon pada contoh ini</span>
                     </span>
                 </span>
             </label>
         </div>
-        <button type="button" class="w-full h-12 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">Bayar Rp 62.500</button>
+        <button type="button" class="w-full h-12 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">Bayar Rp 54.800</button>
         <p class="text-gray-500 text-xs text-center mt-3">Pembayaran memakai QRIS, transfer VA, atau e-wallet.</p>
     </div>
 
@@ -74,7 +74,7 @@
             </thead>
             <tbody class="divide-y divide-white/10">
                 @foreach ([
-                    ['period' => 'Okt 2026', 'no' => 'SUB-2610-01', 'amount' => 'Rp 62.500'],
+                    ['period' => 'Okt 2026', 'no' => 'SUB-2610-01', 'amount' => 'Rp 54.800'],
                     ['period' => 'Sep 2026', 'no' => 'SUB-2609-01', 'amount' => 'Rp 60.000'],
                     ['period' => 'Agu 2026', 'no' => 'SUB-2608-01', 'amount' => 'Rp 57.500'],
                 ] as $row)

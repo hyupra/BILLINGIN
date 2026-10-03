@@ -21,9 +21,9 @@
 @section('content')
 
     <div class="flex items-center gap-2 mb-6">
-        <button type="button" class="px-4 py-2 rounded-full text-sm font-semibold bg-indigo-600 text-white">Okt 2026</button>
-        <button type="button" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Sep 2026</button>
-        <button type="button" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Agu 2026</button>
+        <button type="button" onclick="setActiveFilterPill(this)" class="px-4 py-2 rounded-full text-sm font-semibold bg-indigo-600 text-white">Okt 2026</button>
+        <button type="button" onclick="setActiveFilterPill(this)" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Sep 2026</button>
+        <button type="button" onclick="setActiveFilterPill(this)" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Agu 2026</button>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
@@ -71,6 +71,7 @@
         <div class="rounded-xl border border-white/10 bg-[#0B0F24] overflow-hidden">
             <div class="px-6 py-4 border-b border-white/10">
                 <h2 class="font-bold">Umur tunggakan</h2>
+                <p class="text-gray-500 text-xs mt-1">Dari 12 tagihan yang lewat jatuh tempo.</p>
             </div>
             <table class="w-full text-sm">
                 <thead>
@@ -82,9 +83,9 @@
                 </thead>
                 <tbody class="divide-y divide-white/10">
                     @foreach ([
-                        ['label' => '1-7 hari', 'count' => 19, 'amount' => 'Rp 2.340.000'],
-                        ['label' => '8-14 hari', 'count' => 9, 'amount' => 'Rp 1.150.000'],
-                        ['label' => 'Lebih dari 14 hari', 'count' => 6, 'amount' => 'Rp 700.000'],
+                        ['label' => '1-7 hari', 'count' => 7, 'amount' => 'Rp 980.000'],
+                        ['label' => '8-14 hari', 'count' => 3, 'amount' => 'Rp 700.000'],
+                        ['label' => 'Lebih dari 14 hari', 'count' => 2, 'amount' => 'Rp 480.000'],
                     ] as $row)
                         <tr>
                             <td class="px-6 py-4">{{ $row['label'] }}</td>

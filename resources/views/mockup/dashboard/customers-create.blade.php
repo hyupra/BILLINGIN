@@ -3,7 +3,7 @@
 @section('title', 'Tambah Pelanggan — BILLINGIN')
 @section('active', 'customers')
 @section('back-link')
-    <a href="/mockup/dashboard/pelanggan" class="text-indigo-400 hover:text-indigo-300">&larr; Kembali ke Pelanggan</a>
+    <a href="/mockup/dashboard/customers" class="text-indigo-400 hover:text-indigo-300">&larr; Kembali ke Pelanggan</a>
 @endsection
 @section('page-title', 'Tambah Pelanggan')
 
@@ -103,7 +103,7 @@
 
         <div class="flex items-center gap-3">
             <button type="submit" class="h-12 px-6 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">Simpan Pelanggan</button>
-            <a href="/mockup/dashboard/pelanggan" class="h-12 px-6 inline-flex items-center rounded-lg border border-white/15 font-semibold hover:bg-white/5">Batal</a>
+            <a href="/mockup/dashboard/customers" class="h-12 px-6 inline-flex items-center rounded-lg border border-white/15 font-semibold hover:bg-white/5">Batal</a>
         </div>
     </form>
 @endsection

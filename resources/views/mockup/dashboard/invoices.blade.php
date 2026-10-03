@@ -8,7 +8,7 @@
     <span class="ml-1 inline-block px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 text-xs font-semibold align-middle">data contoh</span>
 @endsection
 @section('page-actions')
-    <button type="button" class="h-11 px-4 inline-flex items-center gap-2 rounded-lg border border-white/15 font-semibold hover:bg-white/5">
+    <button type="button" onclick="mockupToast('Pengingat massal belum aktif di mockup ini')" class="h-11 px-4 inline-flex items-center gap-2 rounded-lg border border-white/15 font-semibold hover:bg-white/5">
         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12a9 9 0 11-9-9 9 9 0 019 9z"/></svg>
         Kirim Pengingat Massal
     </button>
@@ -36,10 +36,10 @@
     </div>
 
     <div class="flex items-center gap-2 flex-wrap mb-5" data-state-switch="invoices">
-        <button type="button" data-state-btn="data" onclick="setTableState('invoices','data')" class="px-4 py-2 rounded-full text-sm font-semibold bg-indigo-600 text-white">Semua 150</button>
-        <button type="button" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Lunas 116</button>
-        <button type="button" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Belum lunas 22</button>
-        <button type="button" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Lewat jatuh tempo 12</button>
+        <button type="button" data-state-btn="data" onclick="setActiveFilterPill(this); setTableState('invoices','data')" class="px-4 py-2 rounded-full text-sm font-semibold bg-indigo-600 text-white">Semua 150</button>
+        <button type="button" onclick="setActiveFilterPill(this); mockupToast('Daftar di bawah belum benar-benar terfilter di mockup ini')" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Lunas 116</button>
+        <button type="button" onclick="setActiveFilterPill(this); mockupToast('Daftar di bawah belum benar-benar terfilter di mockup ini')" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Belum lunas 22</button>
+        <button type="button" onclick="setActiveFilterPill(this); mockupToast('Daftar di bawah belum benar-benar terfilter di mockup ini')" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Lewat jatuh tempo 12</button>
     </div>
 
     <div class="flex items-center gap-2 mb-4 text-xs" data-state-switch="invoices">
@@ -68,12 +68,12 @@
                 <tbody class="divide-y divide-white/10">
                     @php
                         $invoices = [
-                            ['no' => 'INV-2610-0042', 'name' => 'Budi S*****', 'phone' => '0857****695', 'due' => '10 Okt 2026', 'status' => 'Belum lunas', 'amount' => 'Rp 161.500'],
+                            ['no' => 'INV-2610-0042', 'name' => 'Budi S*****', 'phone' => '0857****695', 'due' => '10 Okt 2026', 'status' => 'Lunas', 'amount' => 'Rp 161.500'],
                             ['no' => 'INV-2610-0043', 'name' => 'Siti R*****', 'phone' => '0812****204', 'due' => '10 Okt 2026', 'status' => 'Lunas', 'amount' => 'Rp 111.000'],
-                            ['no' => 'INV-2610-0051', 'name' => 'Agus P*****', 'phone' => '0821****887', 'due' => '05 Okt 2026', 'status' => 'Lewat jatuh tempo', 'amount' => 'Rp 277.500'],
+                            ['no' => 'INV-2610-0051', 'name' => 'Agus P*****', 'phone' => '0821****887', 'due' => '15 Sep 2026', 'status' => 'Lewat jatuh tempo', 'amount' => 'Rp 277.500'],
                             ['no' => 'INV-2610-0060', 'name' => 'Dewi L*****', 'phone' => '0813****119', 'due' => '12 Okt 2026', 'status' => 'Belum lunas', 'amount' => 'Rp 166.500'],
                             ['no' => 'INV-2610-0072', 'name' => 'Ani W*****', 'phone' => '0878****562', 'due' => '15 Okt 2026', 'status' => 'Lunas', 'amount' => 'Rp 166.500'],
-                            ['no' => 'INV-2610-0080', 'name' => 'Joko S*****', 'phone' => '0819****771', 'due' => '03 Okt 2026', 'status' => 'Lewat jatuh tempo', 'amount' => 'Rp 277.500'],
+                            ['no' => 'INV-2610-0080', 'name' => 'Joko S*****', 'phone' => '0819****771', 'due' => '22 Sep 2026', 'status' => 'Lewat jatuh tempo', 'amount' => 'Rp 277.500'],
                             ['no' => 'INV-2610-0085', 'name' => 'Maya K*****', 'phone' => '0838****026', 'due' => '20 Okt 2026', 'status' => 'Belum lunas', 'amount' => 'Rp 111.000'],
                             ['no' => 'INV-2610-0091', 'name' => 'Hendra T*****', 'phone' => '0852****318', 'due' => '10 Okt 2026', 'status' => 'Lunas', 'amount' => 'Rp 111.000'],
                         ];
@@ -98,9 +98,9 @@
                             <td class="px-3 py-4 text-right font-semibold">{{ $i['amount'] }}</td>
                             <td class="px-6 py-4 text-right">
                                 @if ($i['status'] === 'Lunas')
-                                    <a href="#" class="text-indigo-400 hover:text-indigo-300 font-semibold">Lihat struk</a>
+                                    <button type="button" onclick="mockupToast('Struk belum tersedia di mockup ini')" class="text-indigo-400 hover:text-indigo-300 font-semibold">Lihat struk</button>
                                 @else
-                                    <button type="button" class="h-9 px-3 rounded-lg border border-white/15 text-xs font-semibold hover:bg-white/5">Kirim pengingat</button>
+                                    <button type="button" onclick="mockupToast('Pengiriman pengingat belum aktif di mockup ini')" class="h-9 px-3 rounded-lg border border-white/15 text-xs font-semibold hover:bg-white/5">Kirim pengingat</button>
                                 @endif
                             </td>
                         </tr>

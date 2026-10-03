@@ -8,7 +8,7 @@
     <span class="ml-1 inline-block px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 text-xs font-semibold align-middle">data contoh</span>
 @endsection
 @section('page-actions')
-    <button type="button" class="h-11 px-4 inline-flex items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">
+    <button type="button" onclick="mockupToast('Fitur tambah router belum tersedia di mockup ini')" class="h-11 px-4 inline-flex items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">
         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
         Tambah Router
     </button>
@@ -63,8 +63,8 @@
                     </div>
                 @endif
                 <div class="flex items-center gap-3 mt-5">
-                    <button type="button" class="h-11 px-4 rounded-lg border border-white/15 font-semibold hover:bg-white/5">Uji Koneksi</button>
-                    <button type="button" class="h-11 px-4 rounded-lg border border-white/15 font-semibold hover:bg-white/5">Sinkronkan Secret</button>
+                    <button type="button" onclick="mockupToast('Uji koneksi {{ $r['name'] }} belum tersedia di mockup ini')" class="h-11 px-4 rounded-lg border border-white/15 font-semibold hover:bg-white/5">Uji Koneksi</button>
+                    <button type="button" onclick="mockupToast('Sinkronisasi secret {{ $r['name'] }} belum tersedia di mockup ini')" class="h-11 px-4 rounded-lg border border-white/15 font-semibold hover:bg-white/5">Sinkronkan Secret</button>
                 </div>
             </div>
         @endforeach

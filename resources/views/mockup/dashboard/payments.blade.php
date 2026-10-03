@@ -38,11 +38,11 @@
     </div>
 
     <div class="flex items-center gap-2 flex-wrap mb-5" data-state-switch="payments">
-        <button type="button" data-state-btn="data" onclick="setTableState('payments','data')" class="px-4 py-2 rounded-full text-sm font-semibold bg-indigo-600 text-white">Semua</button>
-        <button type="button" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Berhasil</button>
-        <button type="button" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Menunggu</button>
-        <button type="button" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Gagal</button>
-        <button type="button" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Kedaluwarsa</button>
+        <button type="button" data-state-btn="data" onclick="setActiveFilterPill(this); setTableState('payments','data')" class="px-4 py-2 rounded-full text-sm font-semibold bg-indigo-600 text-white">Semua</button>
+        <button type="button" onclick="setActiveFilterPill(this); mockupToast('Daftar di bawah belum benar-benar terfilter di mockup ini')" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Berhasil</button>
+        <button type="button" onclick="setActiveFilterPill(this); mockupToast('Daftar di bawah belum benar-benar terfilter di mockup ini')" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Menunggu</button>
+        <button type="button" onclick="setActiveFilterPill(this); mockupToast('Daftar di bawah belum benar-benar terfilter di mockup ini')" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Gagal</button>
+        <button type="button" onclick="setActiveFilterPill(this); mockupToast('Daftar di bawah belum benar-benar terfilter di mockup ini')" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Kedaluwarsa</button>
     </div>
 
     <div class="flex items-center gap-2 mb-4 text-xs" data-state-switch="payments">

@@ -8,7 +8,7 @@
     <span class="ml-1 inline-block px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 text-xs font-semibold align-middle">data contoh</span>
 @endsection
 @section('page-actions')
-    <button type="button" class="h-11 px-4 inline-flex items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">
+    <button type="button" onclick="mockupToast('Fitur tambah paket belum tersedia di mockup ini')" class="h-11 px-4 inline-flex items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">
         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
         Tambah Paket
     </button>
@@ -46,7 +46,7 @@
                             <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400">&bull; Ya</span>
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <button type="button" class="h-9 px-4 rounded-lg border border-white/15 text-xs font-semibold hover:bg-white/5">Ubah</button>
+                            <button type="button" onclick="mockupToast('Ubah paket {{ $pkg['name'] }} belum tersedia di mockup ini')" class="h-9 px-4 rounded-lg border border-white/15 text-xs font-semibold hover:bg-white/5">Ubah</button>
                         </td>
                     </tr>
                 @endforeach
