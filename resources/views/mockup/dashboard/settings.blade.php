@@ -19,7 +19,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div>
                 <label class="block text-sm font-medium mb-1.5">Nama usaha</label>
-                <input type="text" value="RTRW Net Mekar Jaya" class="w-full h-12 px-4 rounded-lg bg-[#0F1428] border border-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <input type="text" value="RTRW Net Mekar Jaya" required class="w-full h-12 px-4 rounded-lg bg-[#0F1428] border border-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500">
             </div>
             <div>
                 <label class="block text-sm font-medium mb-1.5">Nama pemilik</label>

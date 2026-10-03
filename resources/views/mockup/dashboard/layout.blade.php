@@ -40,7 +40,7 @@
     <aside id="sidebar"
         class="w-64 shrink-0 bg-[#0B0F24] border-r border-white/10 flex flex-col justify-between
                fixed inset-y-0 left-0 z-40 -translate-x-full transition-transform duration-200
-               lg:static lg:translate-x-0">
+               lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:translate-x-0">
         <div>
             <div class="flex items-center gap-2 px-6 py-6">
                 <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center">📶</span>

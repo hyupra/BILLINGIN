@@ -37,7 +37,7 @@
         <div class="space-y-3 mb-5">
             <label class="flex items-center justify-between rounded-lg border border-indigo-500/40 bg-indigo-500/5 px-4 py-3 cursor-pointer">
                 <span class="flex items-center gap-3">
-                    <input type="radio" name="period" checked class="w-4 h-4 text-indigo-500 bg-[#0F1428] border-white/20 focus:ring-indigo-500">
+                    <input type="radio" name="period" data-amount="54800" checked class="w-4 h-4 text-indigo-500 bg-[#0F1428] border-white/20 focus:ring-indigo-500">
                     <span>
                         <span class="block font-semibold">1 bulan</span>
                         <span class="block text-gray-400 text-sm">Rp 54.800</span>
@@ -46,7 +46,7 @@
             </label>
             <label class="flex items-center justify-between rounded-lg border border-white/10 px-4 py-3 cursor-pointer">
                 <span class="flex items-center gap-3">
-                    <input type="radio" name="period" class="w-4 h-4 text-indigo-500 bg-[#0F1428] border-white/20 focus:ring-indigo-500">
+                    <input type="radio" name="period" data-amount="164400" class="w-4 h-4 text-indigo-500 bg-[#0F1428] border-white/20 focus:ring-indigo-500">
                     <span>
                         <span class="block font-semibold">3 bulan</span>
                         <span class="block text-gray-400 text-sm">Rp 164.400 &middot; tanpa diskon pada contoh ini</span>
@@ -54,7 +54,7 @@
                 </span>
             </label>
         </div>
-        <button type="button" class="w-full h-12 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">Bayar Rp 54.800</button>
+        <button type="button" id="pay-button" onclick="mockupToast('Pembayaran langganan belum tersedia di mockup ini')" class="w-full h-12 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">Bayar Rp 54.800</button>
         <p class="text-gray-500 text-xs text-center mt-3">Pembayaran memakai QRIS, transfer VA, atau e-wallet.</p>
     </div>
 
@@ -86,11 +86,25 @@
                             <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400">&bull; Lunas</span>
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <button type="button" class="h-9 px-4 rounded-lg border border-white/15 text-xs font-semibold hover:bg-white/5">Unduh</button>
+                            <button type="button" onclick="mockupToast('Unduh invoice langganan belum tersedia di mockup ini')" class="h-9 px-4 rounded-lg border border-white/15 text-xs font-semibold hover:bg-white/5">Unduh</button>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+@endsection
+
+@section('scripts')
+<script>
+    // Updates the "Bayar Rp ..." button total when the billing period
+    // (1 bulan / 3 bulan) radio selection changes.
+    document.querySelectorAll('input[name="period"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+            if (!this.checked) return;
+            const amount = Number(this.dataset.amount);
+            document.getElementById('pay-button').textContent = 'Bayar Rp ' + amount.toLocaleString('id-ID');
+        });
+    });
+</script>
 @endsection

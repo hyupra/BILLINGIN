@@ -8,7 +8,7 @@
     <span class="ml-1 inline-block px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 text-xs font-semibold align-middle">data contoh</span>
 @endsection
 @section('page-actions')
-    <button type="button" onclick="mockupToast('Pengingat massal belum aktif di mockup ini')" class="h-11 px-4 inline-flex items-center gap-2 rounded-lg border border-white/15 font-semibold hover:bg-white/5">
+    <button type="button" onclick="if (confirm('Kirim pengingat ke semua pelanggan yang menunggak?')) { mockupToast('Pengingat massal belum aktif di mockup ini') }" class="h-11 px-4 inline-flex items-center gap-2 rounded-lg border border-white/15 font-semibold hover:bg-white/5">
         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12a9 9 0 11-9-9 9 9 0 019 9z"/></svg>
         Kirim Pengingat Massal
     </button>
