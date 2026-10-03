@@ -3,11 +3,13 @@ services:
     build: ./docker/nginx
     ports: ["8080:80"]
     depends_on: [app]
+    restart: unless-stopped
 
   app:
     build: .
     command: php-fpm
     env_file: .env
+    restart: unless-stopped
     depends_on:
       mssql: { condition: service_healthy }
       redis: { condition: service_started }
@@ -21,6 +23,7 @@ services:
     build: .
     command: php artisan horizon
     env_file: .env
+    restart: unless-stopped
     depends_on:
       mssql: { condition: service_healthy }
       redis: { condition: service_started }
@@ -29,6 +32,7 @@ services:
     build: .
     command: php artisan schedule:work
     env_file: .env
+    restart: unless-stopped
     depends_on:
       mssql: { condition: service_healthy }
       redis: { condition: service_started }
@@ -37,6 +41,7 @@ services:
     image: redis:7
     command: ["redis-server", "--appendonly", "yes"]
     volumes: ["redis-data:/data"]
+    restart: unless-stopped
 
   mssql:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -46,6 +51,7 @@ services:
       MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD}"
     ports: ["1433:1433"]
     volumes: ["mssql-data:/var/opt/mssql"]
+    restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q 'SELECT 1' || exit 1"]
       interval: 10s
