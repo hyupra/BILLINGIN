@@ -128,14 +128,11 @@ return [
     | you may not need them when building your own application. This may be
     | especially true if you're writing a custom single-page application.
     |
-    | false until the frontend sprint (CLAUDE.md: frontend starts after S2):
-    | no Blade views are wired up (Fortify::loginView() etc. are never
-    | called), so with this true, GET /login 500s with "LoginViewResponse is
-    | not instantiable" instead of 404ing cleanly. POST /login (the actual
-    | auth logic, proven by tests/Feature/Auth/LoginTest.php) is unaffected.
+    | true: resources/views/auth/login.blade.php exists and is bound via
+    | Fortify::loginView() in app/Providers/FortifyServiceProvider.php.
     */
 
-    'views' => false,
+    'views' => true,
 
     /*
     |--------------------------------------------------------------------------
