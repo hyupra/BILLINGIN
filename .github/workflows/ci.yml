@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mssql:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: "Y"
+          MSSQL_SA_PASSWORD: ${{ secrets.CI_MSSQL_SA_PASSWORD }}
+        ports:
+          - 1433:1433
+        options: >-
+          --health-cmd "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P $MSSQL_SA_PASSWORD -Q 'SELECT 1' || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DB_CONNECTION: sqlsrv
+      DB_HOST: 127.0.0.1
+      DB_PORT: 1433
+      # Matches docs/ops/mssql-bootstrap.sql.template, which hardcodes
+      # CREATE DATABASE billingin / USE billingin — the ephemeral CI service
+      # is disposed each run regardless, so there's no need for a
+      # differently-named "billingin_testing" DB.
+      DB_DATABASE: billingin
+      DB_USERNAME: billingin_app
+      DB_PASSWORD: ${{ secrets.CI_DB_APP_PASSWORD }}
+      DB_ENCRYPT: "yes"
+      DB_TRUST_SERVER_CERTIFICATE: "true"
+      # No Horizon-dependent test exists yet (S0 scope); sync/array keeps CI
+      # simple until one does.
+      QUEUE_CONNECTION: sync
+      CACHE_STORE: array
+      SESSION_DRIVER: array
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: sqlsrv, pdo_sqlsrv, redis, bcmath, zip, pcntl
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction
+
+      - name: Generate app key
+        run: php artisan key:generate
+
+      - name: Bootstrap database (RCSI, app login, grants)
+        env:
+          MSSQL_SA_PASSWORD: ${{ secrets.CI_MSSQL_SA_PASSWORD }}
+          DB_APP_PASSWORD: ${{ secrets.CI_DB_APP_PASSWORD }}
+        run: |
+          sed "s/__DB_APP_PASSWORD__/${DB_APP_PASSWORD}/" docs/ops/mssql-bootstrap.sql.template > /tmp/mssql-bootstrap.sql
+          /opt/mssql-tools18/bin/sqlcmd -C -S 127.0.0.1 -U sa -P "$MSSQL_SA_PASSWORD" -i /tmp/mssql-bootstrap.sql
+
+      - name: Run migrations
+        run: php artisan migrate --force
+
+      - name: Run Pest
+        run: vendor/bin/pest
