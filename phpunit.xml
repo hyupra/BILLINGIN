@@ -18,17 +18,21 @@
         </include>
     </source>
     <php>
+        <!--
+          Laravel's default sqlite/array overrides below are intentionally NOT
+          here: S0 exists to prove SQL-Server-specific behavior (RLS,
+          SESSION_CONTEXT), which sqlite can't exercise — tests run against
+          the real sqlsrv/redis connection from the container's env (.env via
+          docker-compose), same as dev. (Empirically, Docker's real OS env
+          vars take precedence over putenv() from these <env> tags anyway, so
+          a sqlite override here would have been silently ineffective.)
+        -->
         <env name="APP_ENV" value="testing"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="BROADCAST_CONNECTION" value="null"/>
-        <env name="CACHE_STORE" value="array"/>
-        <env name="DB_CONNECTION" value="sqlite"/>
-        <env name="DB_DATABASE" value=":memory:"/>
-        <env name="DB_URL" value=""/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
-        <env name="SESSION_DRIVER" value="array"/>
         <env name="PULSE_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="NIGHTWATCH_ENABLED" value="false"/>
