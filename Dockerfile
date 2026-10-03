@@ -16,6 +16,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /var/www/html
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY . .
+# Empty, not secret: real config comes from docker-compose env_file at
+# runtime (which phpdotenv never overrides). Its only job is to stop
+# phpdotenv's file_get_contents(.env) from failing — that failure is
+# suppressed but PHPUnit still flags it as a risky-test warning on every
+# test, since Laravel's test bootstrap tries to safeLoad .env each time.
+RUN touch .env
 # ponytail: dev-mode install (keeps Faker/Pest for seeders+tests); add a --no-dev
 # prod build path (build arg or separate Dockerfile) when an actual deploy happens
 RUN composer install --optimize-autoloader --no-interaction

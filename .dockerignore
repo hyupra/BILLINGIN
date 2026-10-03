@@ -5,10 +5,5 @@
 .secrets
 vendor
 node_modules
-storage/logs
-storage/framework/cache/data
-storage/framework/sessions
-storage/framework/views
 docs
-tests
 *.md
