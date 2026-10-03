@@ -45,19 +45,14 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_PID: "Developer"
-      MSSQL_SA_PASSWORD_FILE: /run/secrets/mssql_sa_password
+      MSSQL_SA_PASSWORD: "${MSSQL_SA_PASSWORD}"
     ports: ["1433:1433"]
     volumes: ["mssql-data:/var/opt/mssql"]
-    secrets: [mssql_sa_password]
     healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$(cat /run/secrets/mssql_sa_password)\" -Q 'SELECT 1' || exit 1"]
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -Q 'SELECT 1' || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 10
-
-secrets:
-  mssql_sa_password:
-    file: ./.secrets/mssql_sa_password.txt
 
 volumes:
   redis-data: {}

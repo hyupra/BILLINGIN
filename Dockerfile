@@ -1,4 +1,4 @@
-FROM php:8.3-fpm-bookworm
+FROM php:8.4-fpm-bookworm
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
       gnupg2 curl ca-certificates unixodbc-dev libzip-dev unzip git \
@@ -16,4 +16,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /var/www/html
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY . .
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# ponytail: dev-mode install (keeps Faker/Pest for seeders+tests); add a --no-dev
+# prod build path (build arg or separate Dockerfile) when an actual deploy happens
+RUN composer install --optimize-autoloader --no-interaction
