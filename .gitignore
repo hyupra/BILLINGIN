@@ -1,5 +1,8 @@
 .env
 .env.*
+!.env.example
+.secrets/
+docs/ops/mssql-bootstrap.sql
 vendor/
 node_modules/
 storage/*.key
