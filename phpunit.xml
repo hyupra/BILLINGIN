@@ -5,9 +5,10 @@
          colors="true"
 >
     <testsuites>
-        <testsuite name="Unit">
-            <directory>tests/Unit</directory>
-        </testsuite>
+        <!-- No Unit suite yet: tests/Unit is empty (no unit tests written in
+             S0), and git doesn't track empty directories, so a fresh clone
+             doesn't have it at all. Add both back when a real unit test
+             exists. -->
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
         </testsuite>
