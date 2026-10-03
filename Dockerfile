@@ -25,3 +25,13 @@ RUN touch .env
 # ponytail: dev-mode install (keeps Faker/Pest for seeders+tests); add a --no-dev
 # prod build path (build arg or separate Dockerfile) when an actual deploy happens
 RUN composer install --optimize-autoloader --no-interaction
+
+# php-fpm workers run as www-data (see php-fpm.d/www.conf), but COPY leaves
+# everything root-owned — Laravel couldn't write compiled views, logs, or
+# cache, failing with "tempnam(): file created in the system's temporary
+# directory" on the very first request. storage/logs doesn't even ship in
+# git (Laravel relies on Monolog auto-creating it), so create it explicitly
+# too rather than hope the app process has permission to.
+RUN mkdir -p storage/logs \
+ && chown -R www-data:www-data storage bootstrap/cache \
+ && chmod -R 775 storage bootstrap/cache
