@@ -9,14 +9,38 @@
          Frontend sprint. This is a visual mockup only — no backend wiring. --}}
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' }</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        html { scroll-behavior: smooth; }
+
+        /* ponytail: pragmatic html.light override layer, not a full semantic
+           dark:/light rework — flips the handful of structural colors used
+           across the page. Good enough for a functional toggle, not pixel-perfect. */
+        html.light body { background: #FAFAFA; color: #0F172A; }
+        html.light .bg-\[\#070A16\] { background-color: #FAFAFA !important; }
+        html.light .bg-\[\#070A16\]\/90 { background-color: rgb(250 250 250 / 0.9) !important; }
+        html.light .bg-\[\#0B0F24\] { background-color: #FFFFFF !important; }
+        html.light .bg-\[\#0F1428\] { background-color: #F1F5F9 !important; }
+        html.light .bg-gradient-to-br.from-\[\#0B0F24\].to-\[\#141A3A\] { background-image: linear-gradient(to bottom right, #FFFFFF, #EEF2FF) !important; }
+        html.light .bg-white.text-\[\#0B0F24\] { background-color: #4F46E5 !important; color: #FFFFFF !important; }
+        html.light .text-white { color: #0F172A !important; }
+        html.light .text-gray-300 { color: #334155 !important; }
+        html.light .text-gray-400 { color: #475569 !important; }
+        html.light .text-gray-500 { color: #64748B !important; }
+        html.light .text-indigo-400 { color: #4F46E5 !important; }
+        html.light .border-white\/10 { border-color: #E2E8F0 !important; }
+        html.light .border-white\/20 { border-color: #CBD5E1 !important; }
+        html.light .divide-white\/10 > :not([hidden]) ~ :not([hidden]) { border-color: #E2E8F0 !important; }
+        html.light .hover\:bg-white\/5:hover { background-color: #F1F5F9 !important; }
+    </style>
 </head>
 <body class="bg-[#070A16] text-white antialiased">
 
     {{-- ========== NAVBAR ========== --}}
     <header class="sticky top-0 z-50 bg-[#070A16]/90 backdrop-blur border-b border-white/10">
         <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-2 shrink-0">
-                <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center">📶</span>
+            <a href="/mockup/landing" class="flex items-center gap-2 shrink-0">
+                <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center"><i class="fa-solid fa-wifi"></i></span>
                 <span class="font-bold text-lg">BILLING<span class="text-indigo-400">IN</span></span>
             </a>
 
@@ -30,13 +54,13 @@
             </nav>
 
             <div class="hidden lg:flex items-center gap-3">
-                <button type="button" aria-label="Ganti mode tampilan" class="w-10 h-10 rounded-lg border border-white/10 bg-[#0F1428] flex items-center justify-center text-gray-300 hover:text-white">☀️</button>
-                <a href="#" class="h-11 px-4 inline-flex items-center rounded-lg border border-white/20 text-sm font-semibold hover:bg-white/5">Masuk</a>
-                <a href="#" class="h-11 px-5 inline-flex items-center rounded-lg bg-indigo-600 hover:bg-indigo-500 text-sm font-semibold transition">Coba Gratis</a>
+                <button type="button" id="theme-toggle" aria-label="Ganti mode tampilan" class="w-10 h-10 rounded-lg border border-white/10 bg-[#0F1428] flex items-center justify-center text-gray-300 hover:text-white"><i id="theme-icon" class="fa-solid fa-sun"></i></button>
+                <a href="/login" class="h-11 px-4 inline-flex items-center rounded-lg border border-white/20 text-sm font-semibold hover:bg-white/5">Masuk</a>
+                <a href="/mockup/register" class="h-11 px-5 inline-flex items-center rounded-lg bg-indigo-600 hover:bg-indigo-500 text-sm font-semibold transition">Coba Gratis</a>
             </div>
 
             <button type="button" id="mobile-menu-btn" aria-label="Buka menu" aria-expanded="false" class="lg:hidden w-11 h-11 rounded-lg border border-white/10 flex items-center justify-center">
-                <span class="text-xl">☰</span>
+                <i class="fa-solid fa-bars text-xl"></i>
             </button>
         </div>
 
@@ -48,8 +72,8 @@
             <a href="#harga" class="block py-1">Harga</a>
             <a href="#faq" class="block py-1">FAQ</a>
             <div class="flex gap-3 pt-2">
-                <a href="#" class="flex-1 h-12 inline-flex items-center justify-center rounded-lg border border-white/20 font-semibold">Masuk</a>
-                <a href="#" class="flex-1 h-12 inline-flex items-center justify-center rounded-lg bg-indigo-600 font-semibold">Coba Gratis</a>
+                <a href="/login" class="flex-1 h-12 inline-flex items-center justify-center rounded-lg border border-white/20 font-semibold">Masuk</a>
+                <a href="/mockup/register" class="flex-1 h-12 inline-flex items-center justify-center rounded-lg bg-indigo-600 font-semibold">Coba Gratis</a>
             </div>
         </nav>
     </header>
@@ -63,7 +87,7 @@
                 <h1 class="text-4xl lg:text-5xl font-bold leading-tight mb-5">Tagihan WiFi Lunas Otomatis, Tanpa Kejar-kejar Pelanggan</h1>
                 <p class="text-gray-400 text-lg mb-8 max-w-lg">Terima QRIS, Virtual Account, dan minimarket dalam satu halaman bayar. Pelanggan terisolir otomatis dibuka begitu pembayaran masuk.</p>
                 <div class="flex flex-col sm:flex-row gap-3 mb-5">
-                    <a href="#" class="h-12 px-6 inline-flex items-center justify-center rounded-lg bg-white text-[#0B0F24] font-semibold hover:bg-gray-100">Coba Gratis 3 Hari</a>
+                    <a href="/mockup/register" class="h-12 px-6 inline-flex items-center justify-center rounded-lg bg-white text-[#0B0F24] font-semibold hover:bg-gray-100">Coba Gratis 3 Hari</a>
                     <a href="#web-pembayaran" class="h-12 px-6 inline-flex items-center justify-center rounded-lg border border-white/20 font-semibold hover:bg-white/5">Lihat Demo Bayar</a>
                 </div>
                 <p class="text-sm text-gray-500">Tanpa biaya setup &middot; Tanpa kartu kredit &middot; Batalkan kapan saja</p>
@@ -90,10 +114,21 @@
                         <span>Total</span><span>Rp 152.500</span>
                     </div>
                 </div>
-                <label class="flex items-center gap-2 h-11 px-3 rounded-lg border border-indigo-500 bg-indigo-500/10 mb-3 text-sm font-medium">
-                    <input type="radio" name="hero-pay-method" checked class="accent-indigo-500"> QRIS
-                </label>
-                <button type="button" class="w-full h-12 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">Bayar Sekarang</button>
+                <div class="grid grid-cols-2 gap-2 mb-3">
+                    <label class="flex items-center gap-2 h-11 px-3 rounded-lg border border-indigo-500 bg-indigo-500/10 text-sm font-medium">
+                        <input type="radio" name="hero-pay-method" checked class="accent-indigo-500"> QRIS
+                    </label>
+                    <label class="flex items-center gap-2 h-11 px-3 rounded-lg border border-white/10 bg-[#0F1428] text-sm font-medium">
+                        <input type="radio" name="hero-pay-method" class="accent-indigo-500"> VA
+                    </label>
+                    <label class="flex items-center gap-2 h-11 px-3 rounded-lg border border-white/10 bg-[#0F1428] text-sm font-medium">
+                        <input type="radio" name="hero-pay-method" class="accent-indigo-500"> E-Wallet
+                    </label>
+                    <label class="flex items-center gap-2 h-11 px-3 rounded-lg border border-white/10 bg-[#0F1428] text-sm font-medium">
+                        <input type="radio" name="hero-pay-method" class="accent-indigo-500"> Minimarket
+                    </label>
+                </div>
+                <a href="/mockup/pay/check-bill" class="w-full h-12 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition flex items-center justify-center">Bayar Sekarang</a>
             </div>
         </div>
     </section>
@@ -133,13 +168,13 @@
             <h2 class="text-3xl lg:text-4xl font-bold mb-10 max-w-xl">Bayar, internet aktif lagi. Tanpa admin.</h2>
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 @foreach ([
-                    ['🏷️', 'Harga transparan per pelanggan', 'Bayar sesuai jumlah pelanggan aktif. Simulasikan sendiri di kalkulator.'],
-                    ['✅', 'Pembayaran otomatis terkonfirmasi', 'Status lunas berubah sendiri begitu pembayaran masuk.'],
-                    ['🚫', 'Auto isolir dan buka isolir', 'Telat bayar terisolir, sudah bayar aktif lagi, tanpa sentuhan admin.'],
-                    ['💬', 'Support responsif lewat WhatsApp', 'Tim kami siap membantu onboarding dan kendala harian.'],
+                    ['fa-solid fa-tag', 'Harga transparan per pelanggan', 'Bayar sesuai jumlah pelanggan aktif. Simulasikan sendiri di kalkulator.'],
+                    ['fa-solid fa-circle-check', 'Pembayaran otomatis terkonfirmasi', 'Status lunas berubah sendiri begitu pembayaran masuk.'],
+                    ['fa-solid fa-ban', 'Auto isolir dan buka isolir', 'Telat bayar terisolir, sudah bayar aktif lagi, tanpa sentuhan admin.'],
+                    ['fa-brands fa-whatsapp', 'Support responsif lewat WhatsApp', 'Tim kami siap membantu onboarding dan kendala harian.'],
                 ] as [$icon, $title, $desc])
                     <div class="rounded-xl border border-white/10 bg-[#0F1428] p-5">
-                        <div class="w-11 h-11 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-lg mb-4">{{ $icon }}</div>
+                        <div class="w-11 h-11 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-lg mb-4"><i class="{{ $icon }}"></i></div>
                         <h3 class="font-semibold mb-1.5">{{ $title }}</h3>
                         <p class="text-sm text-gray-400">{{ $desc }}</p>
                     </div>
@@ -156,22 +191,22 @@
             <p class="text-gray-400 mb-10">Mulai dari enam fitur inti. Sisanya menyusul bertahap.</p>
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 @foreach ([
-                    ['💵', 'Billing & tagihan otomatis', 'Tagihan berulang terbit sendiri tiap periode.', false],
-                    ['📱', 'Payment gateway', 'QRIS, Virtual Account, dan gerai dalam satu halaman.', false],
-                    ['🚫', 'Auto isolir', 'Isolir dan buka isolir langsung di router MikroTik.', false],
-                    ['💬', 'Notifikasi WhatsApp', 'Tagihan, pengingat, dan bukti bayar terkirim otomatis.', false],
-                    ['🎟️', 'Voucher hotspot', 'Jual voucher online, kredensial dikirim ke pembeli.', false],
-                    ['❓', 'Tiket komplain', 'Pelanggan lapor gangguan, Anda pantau progresnya.', false],
-                    ['📶', 'Monitoring router', 'Pantau status online dan offline pelanggan.', true],
-                    ['📊', 'Laporan keuangan', 'Pendapatan dan tunggakan dalam satu laporan.', true],
-                    ['💼', 'Pengeluaran', 'Catat biaya operasional di luar tagihan.', true],
-                    ['🔔', 'Broadcast pesan', 'Kirim info gangguan ke banyak pelanggan sekaligus.', true],
-                    ['📡', 'Multi router', 'Kelola banyak router dari satu akun.', true],
-                    ['📍', 'Peta ODP', 'Lihat sebaran ODP dan sisa slot di peta.', true],
+                    ['fa-solid fa-file-invoice-dollar', 'Billing & tagihan otomatis', 'Tagihan berulang terbit sendiri tiap periode.', false],
+                    ['fa-solid fa-qrcode', 'Payment gateway', 'QRIS, Virtual Account, dan gerai dalam satu halaman.', false],
+                    ['fa-solid fa-ban', 'Auto isolir', 'Isolir dan buka isolir langsung di router MikroTik.', false],
+                    ['fa-brands fa-whatsapp', 'Notifikasi WhatsApp', 'Tagihan, pengingat, dan bukti bayar terkirim otomatis.', false],
+                    ['fa-solid fa-ticket', 'Voucher hotspot', 'Jual voucher online, kredensial dikirim ke pembeli.', false],
+                    ['fa-solid fa-headset', 'Tiket komplain', 'Pelanggan lapor gangguan, Anda pantau progresnya.', false],
+                    ['fa-solid fa-network-wired', 'Monitoring router', 'Pantau status online dan offline pelanggan.', true],
+                    ['fa-solid fa-chart-column', 'Laporan keuangan', 'Pendapatan dan tunggakan dalam satu laporan.', true],
+                    ['fa-solid fa-wallet', 'Pengeluaran', 'Catat biaya operasional di luar tagihan.', true],
+                    ['fa-solid fa-bullhorn', 'Broadcast pesan', 'Kirim info gangguan ke banyak pelanggan sekaligus.', true],
+                    ['fa-solid fa-server', 'Multi router', 'Kelola banyak router dari satu akun.', true],
+                    ['fa-solid fa-location-dot', 'Peta ODP', 'Lihat sebaran ODP dan sisa slot di peta.', true],
                 ] as [$icon, $title, $desc, $soon])
                     <div class="rounded-xl border border-white/10 bg-[#0B0F24] p-5">
                         <div class="flex items-start justify-between mb-4">
-                            <div class="w-11 h-11 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-lg">{{ $icon }}</div>
+                            <div class="w-11 h-11 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-lg"><i class="{{ $icon }}"></i></div>
                             @if ($soon)
                                 <span class="text-[11px] font-medium text-gray-400 inline-flex items-center gap-1 mt-1">
                                     <span class="w-1.5 h-1.5 rounded-full bg-gray-500"></span> Segera hadir
@@ -221,11 +256,11 @@
                         'Data pelanggan selalu disamarkan di halaman publik',
                     ] as $point)
                         <li class="flex items-start gap-2">
-                            <span class="text-emerald-400 mt-0.5">✓</span> <span>{{ $point }}</span>
+                            <span class="text-emerald-400 mt-0.5"><i class="fa-solid fa-circle-check"></i></span> <span>{{ $point }}</span>
                         </li>
                     @endforeach
                 </ul>
-                <a href="#" class="h-12 px-6 inline-flex items-center justify-center rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">Lihat Demo Pembayaran</a>
+                <a href="/mockup/pay/check-bill" class="h-12 px-6 inline-flex items-center justify-center rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">Lihat Demo Pembayaran</a>
             </div>
 
             <div class="rounded-2xl border border-white/10 bg-[#0B0F24] overflow-hidden">
@@ -239,8 +274,8 @@
                     <div>
                         <p class="font-semibold mb-3">Cek atau Bayar Tagihan Internet</p>
                         <input type="text" value="12****67" readonly class="w-full h-11 px-3 rounded-lg bg-[#0F1428] border border-white/10 text-sm text-gray-300 mb-3">
-                        <button type="button" class="w-full h-11 rounded-lg bg-indigo-600 text-sm font-semibold mb-3">Cek Tagihan</button>
-                        <p class="text-sm text-emerald-400 flex items-center gap-1.5"><span>✓</span> Pembayaran berhasil. Terima kasih!</p>
+                        <a href="/mockup/pay/check-bill" class="w-full h-11 rounded-lg bg-indigo-600 text-sm font-semibold mb-3 flex items-center justify-center">Cek Tagihan</a>
+                        <p class="text-sm text-emerald-400 flex items-center gap-1.5"><span><i class="fa-solid fa-circle-check"></i></span> Pembayaran berhasil. Terima kasih!</p>
                     </div>
                     <div class="text-center">
                         <span class="text-[10px] font-bold uppercase tracking-wide bg-amber-400/90 text-[#0B0F24] rounded-full px-2 py-1 mb-2 inline-block">QRIS</span>
@@ -287,11 +322,16 @@
                     <div class="rounded-xl border border-white/10 bg-[#0F1428] p-5">
                         <p class="text-sm text-gray-400 mb-2">{{ $label }}</p>
                         <p class="text-2xl font-bold mb-4">Rp {{ $price }}</p>
-                        <button type="button" class="w-full h-11 rounded-lg border border-white/20 font-semibold hover:bg-white/5">Beli</button>
+                        <a href="/mockup/pay/payment-method" class="w-full h-11 rounded-lg border border-white/20 font-semibold hover:bg-white/5 flex items-center justify-center">Beli</a>
                     </div>
                 @endforeach
             </div>
-            <a href="#" class="h-12 px-6 inline-flex items-center justify-center rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">Lihat Demo Toko</a>
+            <div class="inline-flex items-center gap-3">
+                <a href="#" title="Demo toko segera hadir" class="h-12 px-6 inline-flex items-center justify-center rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition opacity-60 cursor-not-allowed">Lihat Demo Toko</a>
+                <span class="text-[11px] font-medium text-gray-400 inline-flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gray-500"></span> Segera hadir
+                </span>
+            </div>
         </div>
     </section>
 
@@ -325,7 +365,7 @@
                         'Info gangguan jaringan',
                     ] as $point)
                         <li class="flex items-start gap-2">
-                            <span class="text-emerald-400 mt-0.5">✓</span> <span>{{ $point }}</span>
+                            <span class="text-emerald-400 mt-0.5"><i class="fa-solid fa-circle-check"></i></span> <span>{{ $point }}</span>
                         </li>
                     @endforeach
                 </ul>
@@ -370,9 +410,9 @@
                     </div>
 
                     <ul class="space-y-2 text-sm text-gray-300">
-                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Tanpa biaya setup</li>
-                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Gratis trial 3 hari</li>
-                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Bayar per 3 bulan</li>
+                        <li class="flex items-center gap-2"><span class="text-emerald-400"><i class="fa-solid fa-circle-check"></i></span> Tanpa biaya setup</li>
+                        <li class="flex items-center gap-2"><span class="text-emerald-400"><i class="fa-solid fa-circle-check"></i></span> Gratis trial 3 hari</li>
+                        <li class="flex items-center gap-2"><span class="text-emerald-400"><i class="fa-solid fa-circle-check"></i></span> Bayar per 3 bulan</li>
                     </ul>
                 </div>
 
@@ -392,7 +432,7 @@
                         <span>Total per 3 bulan</span>
                         <span class="font-semibold text-white" id="total-3bulan">Rp 120.000</span>
                     </div>
-                    <button type="button" class="mt-auto w-full h-12 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">Coba Gratis 3 Hari</button>
+                    <a href="/mockup/register" class="mt-auto w-full h-12 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition flex items-center justify-center">Coba Gratis 3 Hari</a>
                 </div>
             </div>
         </div>
@@ -447,7 +487,7 @@
                     <details class="group p-5">
                         <summary class="flex items-center justify-between cursor-pointer list-none font-semibold">
                             {{ $q }}
-                            <span class="text-gray-500 transition group-open:rotate-180">⌄</span>
+                            <span class="text-gray-500 transition group-open:rotate-180"><i class="fa-solid fa-chevron-down"></i></span>
                         </summary>
                         <p class="text-sm text-gray-400 mt-3">{{ $a }}</p>
                     </details>
@@ -462,7 +502,7 @@
         <div class="relative max-w-3xl mx-auto px-6 py-20 text-center">
             <h2 class="text-3xl lg:text-5xl font-bold mb-4">Siap Berhenti Menagih Manual?</h2>
             <p class="text-gray-400 mb-8">Daftar dalam beberapa menit. Tanpa biaya setup dan tanpa kartu kredit.</p>
-            <a href="#" class="h-12 px-6 inline-flex items-center justify-center rounded-lg bg-white text-[#0B0F24] font-semibold hover:bg-gray-100">Buat Akun Gratis</a>
+            <a href="/mockup/register" class="h-12 px-6 inline-flex items-center justify-center rounded-lg bg-white text-[#0B0F24] font-semibold hover:bg-gray-100">Buat Akun Gratis</a>
         </div>
     </section>
 
@@ -470,10 +510,10 @@
     <footer class="bg-[#0B0F24] border-t border-white/10">
         <div class="max-w-6xl mx-auto px-6 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
             <div>
-                <div class="flex items-center gap-2 mb-3">
-                    <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center">📶</span>
+                <a href="/mockup/landing" class="flex items-center gap-2 mb-3">
+                    <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center"><i class="fa-solid fa-wifi"></i></span>
                     <span class="font-bold text-lg">BILLING<span class="text-indigo-400">IN</span></span>
-                </div>
+                </a>
                 <p class="text-sm text-gray-500">Billing dan pembayaran WiFi untuk RTRW Net dan ISP lokal.</p>
             </div>
             <div>
@@ -487,8 +527,8 @@
             <div>
                 <p class="font-semibold mb-3">Kontak</p>
                 <ul class="space-y-2 text-sm text-gray-400">
-                    <li>WhatsApp [NOMOR]</li>
-                    <li>Email [ALAMAT EMAIL]</li>
+                    <li><a href="https://wa.me/6281234567890" class="hover:text-white">WhatsApp: 0812-3456-7890 (contoh)</a></li>
+                    <li><a href="mailto:halo@billingin.id" class="hover:text-white">Email: halo@billingin.id (contoh)</a></li>
                 </ul>
             </div>
             <div>
@@ -541,6 +581,32 @@
 
         pelangganSlider.addEventListener('input', recalc);
         routerSlider.addEventListener('input', recalc);
+
+        // Theme toggle — defaults to dark, persists choice in localStorage
+        (function () {
+            const root = document.documentElement;
+            const btn = document.getElementById('theme-toggle');
+            const icon = document.getElementById('theme-icon');
+
+            function applyIcon() {
+                const isLight = root.classList.contains('light');
+                icon.classList.toggle('fa-sun', !isLight);
+                icon.classList.toggle('fa-moon', isLight);
+            }
+
+            let stored = null;
+            try { stored = localStorage.getItem('billingin-theme'); } catch (e) {}
+            if (stored === 'light') root.classList.add('light');
+            applyIcon();
+
+            btn.addEventListener('click', () => {
+                root.classList.toggle('light');
+                applyIcon();
+                try {
+                    localStorage.setItem('billingin-theme', root.classList.contains('light') ? 'light' : 'dark');
+                } catch (e) {}
+            });
+        })();
     </script>
 </body>
 </html>
