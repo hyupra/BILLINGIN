@@ -1484,7 +1484,12 @@ test('tenant B gets a 404 editing or deleting tenant A router by ID', function (
 
     $this->actingAs($userB)->get(route('routers.edit', $routerA))->assertNotFound();
     $this->actingAs($userB)->delete(route('routers.destroy', $routerA))->assertNotFound();
-    expect(Router::find($routerA->id))->not->toBeNull(); // untouched
+    // Bypass the tenant scope deliberately: this checks the row's physical
+    // DB state (not deleted), not whether the current viewer can see it —
+    // the last HTTP call above left TenantContext pointed at tenant B, so
+    // a scoped Router::find() here would return null regardless of
+    // whether destroy() actually ran, making the assertion meaningless.
+    expect(Router::withoutGlobalScope(\App\Support\Tenancy\TenantScope::class)->find($routerA->id))->not->toBeNull(); // untouched
 });
 
 test('test-connection endpoint rejects a blocked host without calling the tester twice or leaking a 500', function () {
@@ -2363,8 +2368,14 @@ test('tenant B gets a 404 editing, updating, or deleting tenant A customer by ID
     $this->actingAs($userB)->put(route('customers.update', $customerA), ['name' => 'Hacked'])->assertNotFound();
     $this->actingAs($userB)->delete(route('customers.destroy', $customerA))->assertNotFound();
 
-    expect($customerA->fresh()->name)->not->toBe('Hacked');
-    expect(Customer::find($customerA->id))->not->toBeNull();
+    // Bypass the tenant scope deliberately: the last HTTP call above left
+    // TenantContext pointed at tenant B, so a scoped lookup here (including
+    // $customerA->fresh(), which re-queries through the same global scope)
+    // would return null regardless of whether update/destroy actually ran —
+    // these checks care about the row's physical DB state, not visibility.
+    $untouched = Customer::withoutGlobalScope(\App\Support\Tenancy\TenantScope::class)->find($customerA->id);
+    expect($untouched)->not->toBeNull();
+    expect($untouched->name)->not->toBe('Hacked');
 });
 
 test('tenant B cannot reference tenant A package_id or router_id when creating a customer', function () {
