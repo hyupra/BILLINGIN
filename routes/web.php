@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Customer\Http\Controllers\CustomerController;
 use App\Modules\Master\Http\Controllers\PackageController;
 use App\Modules\Master\Http\Controllers\RouterController;
 use Illuminate\Support\Facades\Route;
@@ -80,6 +81,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/mockup/dashboard/packages/{package}/edit', [PackageController::class, 'edit'])->name('packages.edit');
     Route::put('/mockup/dashboard/packages/{package}', [PackageController::class, 'update'])->name('packages.update');
     Route::delete('/mockup/dashboard/packages/{package}', [PackageController::class, 'destroy'])->name('packages.destroy');
+
+    Route::get('/mockup/dashboard/customers', [CustomerController::class, 'index'])->name('customers.index');
+    Route::get('/mockup/dashboard/customers-create', [CustomerController::class, 'create'])->name('customers.create');
+    Route::post('/mockup/dashboard/customers', [CustomerController::class, 'store'])->name('customers.store');
+    Route::get('/mockup/dashboard/customers/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
+    Route::put('/mockup/dashboard/customers/{customer}', [CustomerController::class, 'update'])->name('customers.update');
+    Route::delete('/mockup/dashboard/customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
 });
 
 // QA v2 S-01: the partner dashboard represents an authenticated area and

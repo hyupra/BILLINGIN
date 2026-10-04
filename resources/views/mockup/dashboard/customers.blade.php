@@ -54,44 +54,40 @@
                         <th class="px-6 py-3 font-medium">ID</th>
                         <th class="px-3 py-3 font-medium">Pelanggan</th>
                         <th class="px-3 py-3 font-medium">Paket</th>
-                        <th class="px-3 py-3 font-medium">Area</th>
+                        <th class="px-3 py-3 font-medium">Router</th>
                         <th class="px-3 py-3 font-medium">Status</th>
-                        <th class="px-3 py-3 font-medium">Jatuh tempo</th>
-                        <th class="px-6 py-3 font-medium text-right">Tagihan</th>
+                        <th class="px-6 py-3 font-medium text-right">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-white/10">
                     @php
-                        $customers = [
-                            ['id' => 'C-1042', 'name' => 'Budi S*****', 'phone' => '0857****695', 'package' => 'Home 20 Mbps', 'area' => 'Desa Mekar', 'status' => 'Aktif', 'due' => '10 Okt 2026', 'amount' => 'Rp 161.500'],
-                            ['id' => 'C-1043', 'name' => 'Siti R*****', 'phone' => '0812****204', 'package' => 'Home 10 Mbps', 'area' => 'Desa Mekar', 'status' => 'Aktif', 'due' => '10 Okt 2026', 'amount' => 'Rp 111.000'],
-                            ['id' => 'C-1051', 'name' => 'Agus P*****', 'phone' => '0821****887', 'package' => 'Home 50 Mbps', 'area' => 'Kp. Baru', 'status' => 'Terisolir', 'due' => '15 Sep 2026', 'amount' => 'Rp 277.500'],
-                            ['id' => 'C-1060', 'name' => 'Dewi L*****', 'phone' => '0813****119', 'package' => 'Home 20 Mbps', 'area' => 'Perum Asri', 'status' => 'Aktif', 'due' => '12 Okt 2026', 'amount' => 'Rp 166.500'],
-                            ['id' => 'C-1066', 'name' => 'Rudi H*****', 'phone' => '0856****430', 'package' => 'Home 10 Mbps', 'area' => 'Kp. Baru', 'status' => 'Berhenti', 'due' => '-', 'amount' => 'Rp 0'],
-                            ['id' => 'C-1072', 'name' => 'Ani W*****', 'phone' => '0878****562', 'package' => 'Home 20 Mbps', 'area' => 'Desa Mekar', 'status' => 'Aktif', 'due' => '15 Okt 2026', 'amount' => 'Rp 166.500'],
-                            ['id' => 'C-1080', 'name' => 'Joko S*****', 'phone' => '0819****771', 'package' => 'Home 50 Mbps', 'area' => 'Perum Asri', 'status' => 'Terisolir', 'due' => '22 Sep 2026', 'amount' => 'Rp 277.500'],
-                            ['id' => 'C-1085', 'name' => 'Maya K*****', 'phone' => '0838****026', 'package' => 'Home 10 Mbps', 'area' => 'Desa Mekar', 'status' => 'Aktif', 'due' => '20 Okt 2026', 'amount' => 'Rp 111.000'],
-                        ];
                         $statusClass = [
-                            'Aktif' => 'bg-emerald-500/15 text-emerald-400',
-                            'Terisolir' => 'bg-red-500/15 text-red-400',
-                            'Berhenti' => 'bg-white/10 text-gray-400',
+                            'active' => 'bg-emerald-500/15 text-emerald-400',
+                            'suspended' => 'bg-red-500/15 text-red-400',
+                            'stopped' => 'bg-white/10 text-gray-400',
                         ];
+                        $statusLabel = ['active' => 'Aktif', 'suspended' => 'Terisolir', 'stopped' => 'Berhenti'];
                     @endphp
                     @foreach ($customers as $c)
                         <tr class="hover:bg-white/5">
-                            <td class="px-6 py-4 text-gray-400">{{ $c['id'] }}</td>
+                            <td class="px-6 py-4 text-gray-400">{{ $c->customer_code }}</td>
                             <td class="px-3 py-4">
-                                <p class="font-semibold">{{ $c['name'] }}</p>
-                                <p class="text-gray-500 text-xs">{{ $c['phone'] }}</p>
+                                <p class="font-semibold">{{ $c->name }}</p>
+                                <p class="text-gray-500 text-xs">{{ $c->phone }}</p>
                             </td>
-                            <td class="px-3 py-4 text-gray-300">{{ $c['package'] }}</td>
-                            <td class="px-3 py-4 text-gray-300">{{ $c['area'] }}</td>
+                            <td class="px-3 py-4 text-gray-300">{{ $c->package->name }}</td>
+                            <td class="px-3 py-4 text-gray-300">{{ $c->router->name ?? '—' }}</td>
                             <td class="px-3 py-4">
-                                <span class="px-2.5 py-1 rounded-full text-xs font-semibold {{ $statusClass[$c['status']] }}">&bull; {{ $c['status'] }}</span>
+                                <span class="px-2.5 py-1 rounded-full text-xs font-semibold {{ $statusClass[$c->status] }}">&bull; {{ $statusLabel[$c->status] }}</span>
                             </td>
-                            <td class="px-3 py-4 text-gray-300">{{ $c['due'] }}</td>
-                            <td class="px-6 py-4 text-right font-semibold">{{ $c['amount'] }}</td>
+                            <td class="px-6 py-4 text-right space-x-2 whitespace-nowrap">
+                                <a href="{{ route('customers.edit', $c) }}" class="h-9 px-4 inline-flex items-center rounded-lg border border-white/15 text-xs font-semibold hover:bg-white/5">Ubah</a>
+                                <form method="POST" action="{{ route('customers.destroy', $c) }}" class="inline" onsubmit="return confirm('Hapus pelanggan {{ $c->name }}?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="h-9 px-4 rounded-lg border border-red-500/30 text-red-300 text-xs font-semibold hover:bg-red-500/10">Hapus</button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
