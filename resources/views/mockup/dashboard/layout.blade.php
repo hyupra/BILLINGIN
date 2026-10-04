@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'BILLINGIN')</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- ponytail: Tailwind via CDN, no build step yet, matches resources/views/auth/login.blade.php.
          Swap for the real Vite+Tailwind pipeline in the Frontend sprint. --}}
     <script src="https://cdn.tailwindcss.com"></script>

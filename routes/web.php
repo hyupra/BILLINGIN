@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Master\Http\Controllers\RouterController;
 use Illuminate\Support\Facades\Route;
 
 // ponytail: redirect to the landing mockup instead of Laravel's default
@@ -60,6 +61,17 @@ Route::get('/mockup', function () {
             'Langganan' => '/mockup/dashboard/subscription',
         ],
     ]]);
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/mockup/dashboard/routers', [RouterController::class, 'index'])->name('routers.index');
+    Route::get('/mockup/dashboard/routers-create', [RouterController::class, 'create'])->name('routers.create');
+    Route::post('/mockup/dashboard/routers', [RouterController::class, 'store'])->name('routers.store');
+    Route::get('/mockup/dashboard/routers/{router}/edit', [RouterController::class, 'edit'])->name('routers.edit');
+    Route::put('/mockup/dashboard/routers/{router}', [RouterController::class, 'update'])->name('routers.update');
+    Route::delete('/mockup/dashboard/routers/{router}', [RouterController::class, 'destroy'])->name('routers.destroy');
+    Route::post('/mockup/dashboard/routers/{router}/test-connection', [RouterController::class, 'testConnection'])
+        ->middleware('throttle:10,1')->name('routers.test-connection');
 });
 
 // QA v2 S-01: the partner dashboard represents an authenticated area and
