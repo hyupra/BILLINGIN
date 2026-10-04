@@ -586,7 +586,7 @@ use App\Support\Tenancy\TenantContext;
 test('a customer belongs to a package and its NIK is encrypted at rest', function () {
     $tenant = Tenant::factory()->create();
     TenantContext::apply($tenant->id, false);
-    $package = Package::factory()->create();
+    $package = Package::factory()->create(['tenant_id' => $tenant->id]);
 
     $customer = Customer::create([
         'customer_code' => 'C-1000',
@@ -608,7 +608,8 @@ test('a customer belongs to a package and its NIK is encrypted at rest', functio
 test('soft-deleted customers are excluded from default queries', function () {
     $tenant = Tenant::factory()->create();
     TenantContext::apply($tenant->id, false);
-    $customer = Customer::factory()->create();
+    $package = Package::factory()->create(['tenant_id' => $tenant->id]);
+    $customer = Customer::factory()->create(['tenant_id' => $tenant->id, 'package_id' => $package->id]);
 
     $customer->delete();
 
@@ -710,8 +711,8 @@ test('tenant B cannot read tenant A customers even with the Eloquent scope bypas
     $tenantB = Tenant::factory()->create();
 
     TenantContext::apply($tenantA->id, false);
-    $package = Package::factory()->create();
-    $customerA = Customer::factory()->create(['package_id' => $package->id]);
+    $package = Package::factory()->create(['tenant_id' => $tenantA->id]);
+    $customerA = Customer::factory()->create(['tenant_id' => $tenantA->id, 'package_id' => $package->id]);
 
     TenantContext::apply($tenantB->id, false);
     $visible = Customer::withoutGlobalScope(TenantScope::class)->get();
