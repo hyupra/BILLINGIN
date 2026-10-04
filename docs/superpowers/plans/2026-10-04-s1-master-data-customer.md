@@ -2690,10 +2690,16 @@ test('a duplicate ppp_username partway through the file rolls back the whole bat
     $tenant = Tenant::factory()->create();
     $user = User::factory()->create(['tenant_id' => $tenant->id]);
     TenantContext::apply($tenant->id, false); // RLS block predicate needs SESSION_CONTEXT set for these direct Eloquent creates
-    Package::factory()->create(['tenant_id' => $tenant->id, 'name' => 'Home 20 Mbps', 'is_active' => true]);
+    $package = Package::factory()->create(['tenant_id' => $tenant->id, 'name' => 'Home 20 Mbps', 'is_active' => true]);
     $router = Router::factory()->create(['tenant_id' => $tenant->id]);
+    // package_id must be explicit: CustomerFactory's own default
+    // ('package_id' => Package::factory()) would otherwise silently create
+    // an unrelated Package under a brand-new random tenant (via
+    // PackageFactory's own nested Tenant::factory() default), which the
+    // RLS block predicate then rejects since it doesn't match $tenant.
     Customer::factory()->create([
         'tenant_id' => $tenant->id,
+        'package_id' => $package->id,
         'router_id' => $router->id,
         'ppp_username' => 'dup-01',
     ]);
