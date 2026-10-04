@@ -1439,6 +1439,7 @@ use App\Modules\Master\Services\RouterConnectionResult;
 use App\Modules\Master\Services\RouterConnectionTester;
 use App\Modules\Platform\Models\Tenant;
 use App\Modules\Identity\Models\User;
+use App\Support\Tenancy\TenantContext;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 
 beforeEach(fn () => $this->withoutMiddleware(PreventRequestForgery::class));
@@ -1478,6 +1479,7 @@ test('tenant B gets a 404 editing or deleting tenant A router by ID', function (
     $userB = User::factory()->create(['tenant_id' => $tenantB->id]);
 
     $this->actingAs(User::factory()->create(['tenant_id' => $tenantA->id]));
+    TenantContext::apply($tenantA->id, false); // RLS block predicate needs SESSION_CONTEXT set for this direct Eloquent create — actingAs() alone doesn't run SetTenantContext middleware (no HTTP request happens here)
     $routerA = Router::factory()->create(['tenant_id' => $tenantA->id]);
 
     $this->actingAs($userB)->get(route('routers.edit', $routerA))->assertNotFound();
@@ -1488,6 +1490,7 @@ test('tenant B gets a 404 editing or deleting tenant A router by ID', function (
 test('test-connection endpoint rejects a blocked host without calling the tester twice or leaking a 500', function () {
     $tenant = Tenant::factory()->create();
     $user = User::factory()->create(['tenant_id' => $tenant->id]);
+    TenantContext::apply($tenant->id, false); // RLS block predicate needs SESSION_CONTEXT set for this direct Eloquent create
     $router = Router::factory()->create(['tenant_id' => $tenant->id, 'host' => '127.0.0.1']);
 
     $response = $this->actingAs($user)->postJson(route('routers.test-connection', $router));
@@ -1503,6 +1506,7 @@ test('test-connection endpoint reports reachable using an injected fake connecto
 
     $tenant = Tenant::factory()->create();
     $user = User::factory()->create(['tenant_id' => $tenant->id]);
+    TenantContext::apply($tenant->id, false); // RLS block predicate needs SESSION_CONTEXT set for this direct Eloquent create
     $router = Router::factory()->create(['tenant_id' => $tenant->id, 'host' => '203.0.113.10']);
 
     $response = $this->actingAs($user)->postJson(route('routers.test-connection', $router));
@@ -1845,6 +1849,7 @@ use App\Modules\Master\Models\Package;
 use App\Modules\Customer\Models\Customer;
 use App\Modules\Platform\Models\Tenant;
 use App\Modules\Identity\Models\User;
+use App\Support\Tenancy\TenantContext;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 
 beforeEach(fn () => $this->withoutMiddleware(PreventRequestForgery::class));
@@ -1876,6 +1881,7 @@ test('creating a package without required fields fails validation', function () 
 test('deleting a package deactivates it instead of removing the row, and existing customers keep it', function () {
     $tenant = Tenant::factory()->create();
     $user = User::factory()->create(['tenant_id' => $tenant->id]);
+    TenantContext::apply($tenant->id, false); // RLS block predicate needs SESSION_CONTEXT set for these direct Eloquent creates
     $package = Package::factory()->create(['tenant_id' => $tenant->id, 'is_active' => true]);
     $customer = Customer::factory()->create(['tenant_id' => $tenant->id, 'package_id' => $package->id]);
 
@@ -1892,6 +1898,7 @@ test('tenant B gets a 404 editing tenant A package by ID', function () {
     $userB = User::factory()->create(['tenant_id' => $tenantB->id]);
 
     $this->actingAs(User::factory()->create(['tenant_id' => $tenantA->id]));
+    TenantContext::apply($tenantA->id, false); // RLS block predicate needs SESSION_CONTEXT set for this direct Eloquent create
     $packageA = Package::factory()->create(['tenant_id' => $tenantA->id]);
 
     $this->actingAs($userB)->get(route('packages.edit', $packageA))->assertNotFound();
@@ -2261,6 +2268,7 @@ use App\Modules\Master\Models\Package;
 use App\Modules\Master\Models\Router;
 use App\Modules\Platform\Models\Tenant;
 use App\Modules\Identity\Models\User;
+use App\Support\Tenancy\TenantContext;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 
 beforeEach(fn () => $this->withoutMiddleware(PreventRequestForgery::class));
@@ -2268,6 +2276,7 @@ beforeEach(fn () => $this->withoutMiddleware(PreventRequestForgery::class));
 test('a logged-in admin can create a customer', function () {
     $tenant = Tenant::factory()->create();
     $user = User::factory()->create(['tenant_id' => $tenant->id]);
+    TenantContext::apply($tenant->id, false); // RLS block predicate needs SESSION_CONTEXT set for this direct Eloquent create
     $package = Package::factory()->create(['tenant_id' => $tenant->id]);
 
     $response = $this->actingAs($user)->post(route('customers.store'), [
@@ -2294,6 +2303,7 @@ test('creating a customer without required fields fails validation and nothing i
 test('an invalid phone format is rejected', function () {
     $tenant = Tenant::factory()->create();
     $user = User::factory()->create(['tenant_id' => $tenant->id]);
+    TenantContext::apply($tenant->id, false); // RLS block predicate needs SESSION_CONTEXT set for this direct Eloquent create
     $package = Package::factory()->create(['tenant_id' => $tenant->id]);
 
     $response = $this->actingAs($user)->post(route('customers.store'), [
@@ -2309,6 +2319,7 @@ test('an invalid phone format is rejected', function () {
 test('the same ppp_username is allowed on two different routers, rejected twice on the same router', function () {
     $tenant = Tenant::factory()->create();
     $user = User::factory()->create(['tenant_id' => $tenant->id]);
+    TenantContext::apply($tenant->id, false); // RLS block predicate needs SESSION_CONTEXT set for these direct Eloquent creates
     $package = Package::factory()->create(['tenant_id' => $tenant->id]);
     $routerA = Router::factory()->create(['tenant_id' => $tenant->id]);
     $routerB = Router::factory()->create(['tenant_id' => $tenant->id]);
@@ -2344,6 +2355,7 @@ test('tenant B gets a 404 editing, updating, or deleting tenant A customer by ID
     $userB = User::factory()->create(['tenant_id' => $tenantB->id]);
 
     $this->actingAs(User::factory()->create(['tenant_id' => $tenantA->id]));
+    TenantContext::apply($tenantA->id, false); // RLS block predicate needs SESSION_CONTEXT set for these direct Eloquent creates
     $packageA = Package::factory()->create(['tenant_id' => $tenantA->id]);
     $customerA = Customer::factory()->create(['tenant_id' => $tenantA->id, 'package_id' => $packageA->id]);
 
@@ -2361,6 +2373,7 @@ test('tenant B cannot reference tenant A package_id or router_id when creating a
     $userB = User::factory()->create(['tenant_id' => $tenantB->id]);
 
     $this->actingAs(User::factory()->create(['tenant_id' => $tenantA->id]));
+    TenantContext::apply($tenantA->id, false); // RLS block predicate needs SESSION_CONTEXT set for this direct Eloquent create
     $packageA = Package::factory()->create(['tenant_id' => $tenantA->id]);
 
     $response = $this->actingAs($userB)->post(route('customers.store'), [
@@ -2596,6 +2609,7 @@ use App\Modules\Master\Models\Package;
 use App\Modules\Master\Models\Router;
 use App\Modules\Platform\Models\Tenant;
 use App\Modules\Identity\Models\User;
+use App\Support\Tenancy\TenantContext;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -2613,6 +2627,7 @@ function makeCsv(string $content): UploadedFile
 test('valid rows are imported and invalid rows are reported without aborting the batch', function () {
     $tenant = Tenant::factory()->create();
     $user = User::factory()->create(['tenant_id' => $tenant->id]);
+    TenantContext::apply($tenant->id, false); // RLS block predicate needs SESSION_CONTEXT set for this direct Eloquent create
     Package::factory()->create(['tenant_id' => $tenant->id, 'name' => 'Home 20 Mbps', 'is_active' => true]);
 
     $csv = "nama,wa,alamat,paket,username_pppoe\n"
@@ -2636,6 +2651,7 @@ test('valid rows are imported and invalid rows are reported without aborting the
 test('a CSV missing a required header column is rejected with one clear message, no rows processed', function () {
     $tenant = Tenant::factory()->create();
     $user = User::factory()->create(['tenant_id' => $tenant->id]);
+    TenantContext::apply($tenant->id, false); // RLS block predicate needs SESSION_CONTEXT set for this direct Eloquent create
     Package::factory()->create(['tenant_id' => $tenant->id, 'name' => 'Home 20 Mbps']);
 
     $csv = "nama,wa,alamat,username_pppoe\n" // missing "paket"
@@ -2652,6 +2668,7 @@ test('a CSV missing a required header column is rejected with one clear message,
 test('a duplicate ppp_username partway through the file rolls back the whole batch with a clear message, not a 500', function () {
     $tenant = Tenant::factory()->create();
     $user = User::factory()->create(['tenant_id' => $tenant->id]);
+    TenantContext::apply($tenant->id, false); // RLS block predicate needs SESSION_CONTEXT set for these direct Eloquent creates
     Package::factory()->create(['tenant_id' => $tenant->id, 'name' => 'Home 20 Mbps', 'is_active' => true]);
     $router = Router::factory()->create(['tenant_id' => $tenant->id]);
     Customer::factory()->create([
