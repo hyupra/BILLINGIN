@@ -59,8 +59,18 @@ class CustomerImportController extends Controller
 
                 continue;
             }
+            if (mb_strlen($name) > 150) {
+                $errors[] = "Baris {$rowNumber}: nama terlalu panjang (maks 150 karakter).";
+
+                continue;
+            }
             if (! preg_match('/^(08|628)[0-9]{8,13}$/', $phone)) {
                 $errors[] = "Baris {$rowNumber}: nomor WA \"{$phone}\" tidak valid.";
+
+                continue;
+            }
+            if ($address !== null && mb_strlen($address) > 255) {
+                $errors[] = "Baris {$rowNumber}: alamat terlalu panjang (maks 255 karakter).";
 
                 continue;
             }
@@ -79,6 +89,7 @@ class CustomerImportController extends Controller
                 'ppp_username' => $pppUsername !== '' ? $pppUsername : null,
                 'billing_type' => 'postpaid',
                 'status' => 'active',
+                'due_day' => 10, // matches CustomerController::store()'s S1 hardcoded fallback
             ];
         }
         fclose($handle);
@@ -99,7 +110,7 @@ class CustomerImportController extends Controller
             }
 
             return back()->withErrors([
-                'csv_file' => 'Impor dibatalkan: ada baris dengan data duplikat (kemungkinan username PPPoE sudah dipakai di router yang sama). Tidak ada baris yang disimpan — perbaiki file dan unggah ulang.',
+                'csv_file' => 'Impor dibatalkan: ada baris dengan data yang bentrok dengan data lain (kemungkinan username PPPoE atau kode pelanggan duplikat). Tidak ada baris yang disimpan — perbaiki file dan unggah ulang.',
             ]);
         }
 
