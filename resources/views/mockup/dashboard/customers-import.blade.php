@@ -28,7 +28,27 @@
                     <span class="block text-gray-500 text-sm mt-1">Format .csv, maksimal 5 MB</span>
                     <input id="csv-file" type="file" accept=".csv" class="hidden">
                 </label>
+                <p id="csv-filename" class="hidden text-sm text-gray-300 mt-3"></p>
+                <button id="csv-import-btn" type="button" onclick="mockupToast('Impor CSV belum tersedia di mockup ini')" class="hidden mt-4 h-11 px-5 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">Impor</button>
             </form>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+<script>
+    document.getElementById('csv-file').addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        const nameEl = document.getElementById('csv-filename');
+        const btn = document.getElementById('csv-import-btn');
+        if (file) {
+            nameEl.textContent = 'File dipilih: ' + file.name;
+            nameEl.classList.remove('hidden');
+            btn.classList.remove('hidden');
+        } else {
+            nameEl.classList.add('hidden');
+            btn.classList.add('hidden');
+        }
+    });
+</script>
 @endsection

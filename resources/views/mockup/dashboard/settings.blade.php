@@ -67,7 +67,7 @@
             </button>
         </div>
 
-        <button type="submit" onclick="mockupToast('Perubahan belum benar-benar tersimpan di mockup ini')" class="h-12 px-6 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">Simpan Perubahan</button>
+        <button type="submit" onclick="if (this.form.reportValidity()) { mockupToast('Perubahan belum benar-benar tersimpan di mockup ini') }" class="h-12 px-6 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">Simpan Perubahan</button>
     </form>
     </div>
 
