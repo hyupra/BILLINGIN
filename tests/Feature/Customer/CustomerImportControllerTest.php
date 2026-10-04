@@ -65,10 +65,11 @@ test('a duplicate ppp_username partway through the file rolls back the whole bat
     $tenant = Tenant::factory()->create();
     $user = User::factory()->create(['tenant_id' => $tenant->id]);
     TenantContext::apply($tenant->id, false); // RLS block predicate needs SESSION_CONTEXT set for these direct Eloquent creates
-    Package::factory()->create(['tenant_id' => $tenant->id, 'name' => 'Home 20 Mbps', 'is_active' => true]);
+    $package = Package::factory()->create(['tenant_id' => $tenant->id, 'name' => 'Home 20 Mbps', 'is_active' => true]);
     $router = Router::factory()->create(['tenant_id' => $tenant->id]);
     Customer::factory()->create([
         'tenant_id' => $tenant->id,
+        'package_id' => $package->id,
         'router_id' => $router->id,
         'ppp_username' => 'dup-01',
     ]);
