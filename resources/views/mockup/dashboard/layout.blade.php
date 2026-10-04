@@ -189,6 +189,19 @@
             });
         })();
 
+        // Delegated confirm handler for destructive forms (Hapus/Nonaktifkan).
+        // Reads the name from a data-* attribute via DOM property (not string
+        // interpolation), so an apostrophe in the name can't break out of a
+        // JS string literal and silently skip the confirm.
+        document.addEventListener('submit', function (e) {
+            const form = e.target;
+            if (form.dataset.confirmDelete !== undefined) {
+                if (!confirm('Hapus ' + form.dataset.confirmDelete + '?')) e.preventDefault();
+            } else if (form.dataset.confirmDeactivate !== undefined) {
+                if (!confirm('Nonaktifkan paket ' + form.dataset.confirmDeactivate + '? Pelanggan yang masih memakainya tidak terpengaruh.')) e.preventDefault();
+            }
+        });
+
         function toggleSidebar(open) {
             const sb = document.getElementById('sidebar');
             const bd = document.getElementById('sidebar-backdrop');

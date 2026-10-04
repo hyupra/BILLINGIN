@@ -5,7 +5,6 @@
 @section('page-title', 'Paket')
 @section('page-subtitle')
     Atur paket internet, harga, dan PPN.
-    <span class="ml-1 inline-block px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 text-xs font-semibold align-middle">data contoh</span>
 @endsection
 @section('page-actions')
     <a href="{{ route('packages.create') }}" class="h-11 px-4 inline-flex items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">
@@ -50,7 +49,7 @@
                         <td class="px-6 py-4 text-right space-x-2 whitespace-nowrap">
                             <a href="{{ route('packages.edit', $pkg) }}" class="h-9 px-4 inline-flex items-center rounded-lg border border-white/15 text-xs font-semibold hover:bg-white/5">Ubah</a>
                             @if ($pkg->is_active)
-                                <form method="POST" action="{{ route('packages.destroy', $pkg) }}" class="inline" onsubmit="return confirm('Nonaktifkan paket {{ $pkg->name }}? Pelanggan yang masih memakainya tidak terpengaruh.')">
+                                <form method="POST" action="{{ route('packages.destroy', $pkg) }}" class="inline" data-confirm-deactivate="{{ $pkg->name }}">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="h-9 px-4 rounded-lg border border-red-500/30 text-red-300 text-xs font-semibold hover:bg-red-500/10">Nonaktifkan</button>

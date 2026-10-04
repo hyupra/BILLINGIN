@@ -5,7 +5,6 @@
 @section('page-title', 'Pelanggan')
 @section('page-subtitle')
     Kelola pelanggan, paket, dan status layanan.
-    <span class="ml-1 inline-block px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 text-xs font-semibold align-middle">data contoh</span>
 @endsection
 @section('page-actions')
     <a href="/mockup/dashboard/customers-import" class="h-11 px-4 inline-flex items-center gap-2 rounded-lg border border-white/15 font-semibold hover:bg-white/5">
@@ -19,14 +18,17 @@
 @endsection
 
 @section('content')
+    @if (session('status'))
+        <div class="mb-5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">{{ session('status') }}</div>
+    @endif
 
     {{-- Filter tabs + search --}}
     <div class="flex items-center justify-between gap-4 flex-wrap mb-5" data-state-switch="customers">
         <div class="flex items-center gap-2 flex-wrap">
-            <button type="button" data-state-btn="data" onclick="setActiveFilterPill(this); setTableState('customers','data')" class="px-4 py-2 rounded-full text-sm font-semibold bg-indigo-600 text-white">Semua 150</button>
-            <button type="button" onclick="setActiveFilterPill(this); mockupToast('Daftar di bawah belum benar-benar terfilter di mockup ini')" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Aktif 128</button>
-            <button type="button" onclick="setActiveFilterPill(this); mockupToast('Daftar di bawah belum benar-benar terfilter di mockup ini')" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Terisolir 12</button>
-            <button type="button" onclick="setActiveFilterPill(this); mockupToast('Daftar di bawah belum benar-benar terfilter di mockup ini')" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Berhenti 10</button>
+            <button type="button" data-state-btn="data" onclick="setActiveFilterPill(this); setTableState('customers','data')" class="px-4 py-2 rounded-full text-sm font-semibold bg-indigo-600 text-white">Semua {{ $customers->count() }}</button>
+            <button type="button" onclick="setActiveFilterPill(this); mockupToast('Daftar di bawah belum benar-benar terfilter di mockup ini')" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Aktif</button>
+            <button type="button" onclick="setActiveFilterPill(this); mockupToast('Daftar di bawah belum benar-benar terfilter di mockup ini')" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Terisolir</button>
+            <button type="button" onclick="setActiveFilterPill(this); mockupToast('Daftar di bawah belum benar-benar terfilter di mockup ini')" class="px-4 py-2 rounded-full text-sm font-semibold border border-white/15 text-gray-300 hover:bg-white/5">Berhenti</button>
         </div>
         <div class="w-full sm:w-72">
             <input type="text" placeholder="Cari nama, ID, atau paket" class="h-11 w-full px-4 rounded-lg bg-[#0F1428] border border-white/10 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">
@@ -68,7 +70,7 @@
                         ];
                         $statusLabel = ['active' => 'Aktif', 'suspended' => 'Terisolir', 'stopped' => 'Berhenti'];
                     @endphp
-                    @foreach ($customers as $c)
+                    @forelse ($customers as $c)
                         <tr class="hover:bg-white/5">
                             <td class="px-6 py-4 text-gray-400">{{ $c->customer_code }}</td>
                             <td class="px-3 py-4">
@@ -82,14 +84,16 @@
                             </td>
                             <td class="px-6 py-4 text-right space-x-2 whitespace-nowrap">
                                 <a href="{{ route('customers.edit', $c) }}" class="h-9 px-4 inline-flex items-center rounded-lg border border-white/15 text-xs font-semibold hover:bg-white/5">Ubah</a>
-                                <form method="POST" action="{{ route('customers.destroy', $c) }}" class="inline" onsubmit="return confirm('Hapus pelanggan {{ $c->name }}?')">
+                                <form method="POST" action="{{ route('customers.destroy', $c) }}" class="inline" data-confirm-delete="{{ $c->name }}">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="h-9 px-4 rounded-lg border border-red-500/30 text-red-300 text-xs font-semibold hover:bg-red-500/10">Hapus</button>
                                 </form>
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr><td colspan="6" class="px-6 py-10 text-center text-gray-400">Belum ada pelanggan. <a href="/mockup/dashboard/customers-create" class="text-indigo-400 hover:text-indigo-300">Tambah pelanggan pertama</a>.</td></tr>
+                    @endforelse
                 </tbody>
             </table>
             <div class="flex items-center justify-between px-6 py-4 border-t border-white/10">

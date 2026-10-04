@@ -5,7 +5,6 @@
 @section('page-title', 'Router')
 @section('page-subtitle')
     Hubungkan MikroTik untuk isolir dan buka isolir otomatis.
-    <span class="ml-1 inline-block px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 text-xs font-semibold align-middle">data contoh</span>
 @endsection
 @section('page-actions')
     <a href="{{ route('routers.create') }}" class="h-11 px-4 inline-flex items-center gap-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">
@@ -47,9 +46,9 @@
                 </div>
                 <div class="flex items-center gap-3 mt-5 flex-wrap">
                     <button type="button" data-test-connection="{{ route('routers.test-connection', $router) }}" class="h-11 px-4 rounded-lg border border-white/15 font-semibold hover:bg-white/5">Uji Koneksi</button>
-                    <button type="button" onclick="mockupToast('Sinkronisasi secret {{ $router->name }} belum tersedia — bagian S3')" class="h-11 px-4 rounded-lg border border-white/15 font-semibold hover:bg-white/5">Sinkronkan Secret</button>
+                    <button type="button" data-sync-name="{{ $router->name }}" onclick="mockupToast('Sinkronisasi secret ' + this.dataset.syncName + ' belum tersedia — bagian S3')" class="h-11 px-4 rounded-lg border border-white/15 font-semibold hover:bg-white/5">Sinkronkan Secret</button>
                     <a href="{{ route('routers.edit', $router) }}" class="h-11 px-4 inline-flex items-center rounded-lg border border-white/15 font-semibold hover:bg-white/5">Ubah</a>
-                    <form method="POST" action="{{ route('routers.destroy', $router) }}" onsubmit="return confirm('Hapus router {{ $router->name }}?')">
+                    <form method="POST" action="{{ route('routers.destroy', $router) }}" data-confirm-delete="{{ $router->name }}">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="h-11 px-4 rounded-lg border border-red-500/30 text-red-300 font-semibold hover:bg-red-500/10">Hapus</button>
