@@ -28,6 +28,7 @@ class Package extends Model
         return [
             'base_price' => 'integer',
             'ppn_percent' => 'decimal:2',
+            'router_id' => 'integer',
             'allow_online_registration' => 'boolean',
             'is_active' => 'boolean',
         ];

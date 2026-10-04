@@ -39,6 +39,8 @@ class Customer extends Model
             'extra_amount' => 'integer',
             'discount' => 'integer',
             'due_day' => 'integer',
+            'package_id' => 'integer',
+            'router_id' => 'integer',
         ];
     }
 
