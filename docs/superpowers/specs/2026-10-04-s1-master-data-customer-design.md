@@ -106,7 +106,7 @@ otomatis dari sesi — tidak ada parameter tenant di URL.
 | POST | `/mockup/dashboard/packages` | `PackageController@store` |
 | GET | `/mockup/dashboard/packages/{package}/edit` | `PackageController@edit` |
 | PUT | `/mockup/dashboard/packages/{package}` | `PackageController@update` |
-| DELETE | `/mockup/dashboard/packages/{package}` | `PackageController@destroy` |
+| DELETE | `/mockup/dashboard/packages/{package}` | `PackageController@destroy` (lihat catatan di bawah) |
 | GET | `/mockup/dashboard/routers` | `RouterController@index` |
 | GET | `/mockup/dashboard/routers-create` | `RouterController@create` |
 | POST | `/mockup/dashboard/routers` | `RouterController@store` |
@@ -130,6 +130,15 @@ View yang sudah ada (`customers.blade.php`, `customers-create.blade.php`, `packa
 `routers.blade.php`, `customers-import.blade.php`) disambungkan ke data asli: data statis `@php`
 array diganti jadi data dari controller, tombol/form stub diganti form POST/PUT/DELETE beneran
 dengan `@csrf` dan `@method`.
+
+**Hapus paket** (ditemukan saat review spec oleh QA — belum ditentukan di draf pertama): `packages`
+tidak pernah di-hard-delete, karena `customers.package_id` adalah FK hidup (beda dengan
+`invoice_items` di dokumen rancangan yang snapshot harga, bukan reference). `DELETE
+.../packages/{package}` mengeset `is_active = false`, bukan menghapus row. Paket nonaktif tidak
+muncul lagi di dropdown form Tambah/Ubah Pelanggan, tapi pelanggan existing yang masih memakainya
+tidak terpengaruh. Label tombol di UI tetap "Hapus" (sesuai mockup sekarang) tapi perilakunya
+nonaktifkan — kalau ini membingungkan user ISP, penamaan ulang tombol jadi "Nonaktifkan" adalah
+perubahan UI kecil yang bisa menyusul.
 
 ### Validasi
 
@@ -164,6 +173,18 @@ dicoba di sini.
 
 `ponytail: implementasi NetworkDriver interface penuh (createAccount/isolate/reopen/dst) →
 dibangun di S3 saat fitur isolir otomatis benar-benar dikerjakan.`
+
+**Mitigasi SSRF** (ditemukan saat review spec oleh QA): endpoint ini menerima host dari data yang
+admin tenant input sendiri (`routers.host`), jadi berisiko dipakai untuk probe jaringan internal
+server (metadata cloud, loopback, port internal lain). Mitigasi wajib di S1:
+- Tolak (422, sebelum mencoba konek) kalau host me-resolve ke rentang loopback (`127.0.0.0/8`,
+  `::1`), link-local/metadata (`169.254.0.0/16`), atau `0.0.0.0`.
+- Rate-limit endpoint ini per user (`throttle:10,1` — maks 10x/menit), supaya tidak dipakai scan
+  port massal walau host-nya lolos validasi di atas.
+- Catat tiap percobaan (host, hasil, user, timestamp) ke `audit_logs` yang sudah ada.
+- Rentang IP privat LAN (`10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) **tetap diizinkan** —
+  router MikroTik memang lazim di LAN privat yang dijangkau lewat VPN sesuai dokumen rancangan §2.2,
+  jadi memblokirnya akan merusak fitur asli.
 
 ### Keamanan & isolasi tenant
 
