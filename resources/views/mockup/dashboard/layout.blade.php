@@ -8,6 +8,7 @@
          Swap for the real Vite+Tailwind pipeline in the Frontend sprint. --}}
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config = { darkMode: 'class' }</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         {{-- ponytail: same pragmatic html.light override layer as mockup/landing.blade.php —
              flips the structural colors used across the dashboard shell + pages. Not pixel-perfect. --}}
@@ -43,7 +44,7 @@
                lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto lg:translate-x-0">
         <div>
             <div class="flex items-center gap-2 px-6 py-6">
-                <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center">📶</span>
+                <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center"><i class="fa-solid fa-wifi"></i></span>
                 <span class="font-bold text-lg">BILLING<span class="text-indigo-400">IN</span></span>
             </div>
 
@@ -101,7 +102,7 @@
         {{-- Mobile topbar (hamburger only below lg:) --}}
         <div class="lg:hidden flex items-center justify-between px-4 py-3 border-b border-white/10 bg-[#0B0F24]">
             <div class="flex items-center gap-2">
-                <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-sm">📶</span>
+                <span class="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-sm"><i class="fa-solid fa-wifi"></i></span>
                 <span class="font-bold">BILLING<span class="text-indigo-400">IN</span></span>
             </div>
             <button type="button" onclick="toggleSidebar(true)" class="w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center" aria-label="Buka menu">
