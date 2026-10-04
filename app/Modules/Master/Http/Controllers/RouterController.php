@@ -3,6 +3,7 @@
 namespace App\Modules\Master\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Identity\Models\AuditLog;
 use App\Modules\Master\Http\Requests\StoreRouterRequest;
 use App\Modules\Master\Http\Requests\UpdateRouterRequest;
 use App\Modules\Master\Models\Router;
@@ -72,6 +73,21 @@ class RouterController extends Controller
     public function testConnection(Router $router, RouterConnectionTester $tester): JsonResponse
     {
         $result = $tester->test($router->host, $router->api_port);
+
+        // Mitigasi SSRF (spec §"Mitigasi SSRF"): catat tiap percobaan
+        // (host, hasil, user, timestamp) ke audit_logs.
+        AuditLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'router.test_connection',
+            'subject_type' => Router::class,
+            'subject_id' => $router->id,
+            'after_json' => json_encode([
+                'host' => $router->host,
+                'result' => $result->blocked ? 'blocked' : ($result->reachable ? 'reachable' : 'unreachable'),
+                'message' => $result->message,
+            ]),
+            'created_at' => now(),
+        ]);
 
         if ($result->blocked) {
             return response()->json(['ok' => false, 'message' => $result->message], 422);
