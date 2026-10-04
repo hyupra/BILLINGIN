@@ -50,12 +50,16 @@ test('tenant B gets a 404 editing or deleting tenant A router by ID', function (
 
     $this->actingAs($userB)->get(route('routers.edit', $routerA))->assertNotFound();
     $this->actingAs($userB)->delete(route('routers.destroy', $routerA))->assertNotFound();
-    // Bypass the tenant scope deliberately: this checks the row's physical
-    // DB state (not deleted), not whether the current viewer can see it —
-    // the last HTTP call above left TenantContext pointed at tenant B, so
-    // a scoped Router::find() here would return null regardless of
-    // whether destroy() actually ran, making the assertion meaningless.
-    expect(Router::withoutGlobalScope(\App\Support\Tenancy\TenantScope::class)->find($routerA->id))->not->toBeNull(); // untouched
+    // This checks the row's physical DB state (not deleted), not whether
+    // the current viewer can see it. Bypassing the Eloquent scope alone
+    // isn't enough: SQL Server's RLS FILTER PREDICATE is a separate,
+    // DB-layer check against SESSION_CONTEXT('tenant_id'), still set to
+    // tenant B from the last HTTP call above — it hides the row too,
+    // independent of Eloquent. Switch to the superadmin session context
+    // (same pattern as tests/Feature/Tenancy/TenantIsolationRlsTest.php)
+    // to bypass both layers at once.
+    TenantContext::apply(null, true);
+    expect(Router::find($routerA->id))->not->toBeNull(); // untouched
 });
 
 test('test-connection endpoint rejects a blocked host without calling the tester twice or leaking a 500', function () {
