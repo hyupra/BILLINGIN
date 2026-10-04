@@ -23,6 +23,7 @@ class UpdatePackageRequest extends FormRequest
             'router_id' => ['nullable', 'integer', Rule::exists('routers', 'id')->where('tenant_id', TenantContext::tenantId())],
             'default_profile' => ['nullable', 'string', 'max:80'],
             'allow_online_registration' => ['sometimes', 'boolean'],
+            'is_active' => ['sometimes', 'boolean'],
         ];
     }
 }

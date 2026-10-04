@@ -57,6 +57,11 @@
                 <input type="checkbox" name="allow_online_registration" value="1" @checked(old('allow_online_registration', $package->allow_online_registration)) class="w-4 h-4 rounded text-indigo-500 bg-[#0F1428] border-white/20 focus:ring-indigo-500">
                 Izinkan untuk pendaftaran online
             </label>
+            <label class="flex items-center gap-2 text-sm mt-3">
+                <input type="hidden" name="is_active" value="0">
+                <input type="checkbox" name="is_active" value="1" @checked(old('is_active', $package->is_active)) class="w-4 h-4 rounded text-indigo-500 bg-[#0F1428] border-white/20 focus:ring-indigo-500">
+                Aktif (nonaktifkan untuk menyembunyikan dari pendaftaran baru)
+            </label>
         </div>
         <div class="flex items-center gap-3">
             <button type="submit" class="h-12 px-6 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">Simpan Perubahan</button>
