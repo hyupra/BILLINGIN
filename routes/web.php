@@ -1,5 +1,6 @@
 <?php
 
+use App\Modules\Master\Http\Controllers\PackageController;
 use App\Modules\Master\Http\Controllers\RouterController;
 use Illuminate\Support\Facades\Route;
 
@@ -72,6 +73,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/mockup/dashboard/routers/{router}', [RouterController::class, 'destroy'])->name('routers.destroy');
     Route::post('/mockup/dashboard/routers/{router}/test-connection', [RouterController::class, 'testConnection'])
         ->middleware('throttle:10,1')->name('routers.test-connection');
+
+    Route::get('/mockup/dashboard/packages', [PackageController::class, 'index'])->name('packages.index');
+    Route::get('/mockup/dashboard/packages-create', [PackageController::class, 'create'])->name('packages.create');
+    Route::post('/mockup/dashboard/packages', [PackageController::class, 'store'])->name('packages.store');
+    Route::get('/mockup/dashboard/packages/{package}/edit', [PackageController::class, 'edit'])->name('packages.edit');
+    Route::put('/mockup/dashboard/packages/{package}', [PackageController::class, 'update'])->name('packages.update');
+    Route::delete('/mockup/dashboard/packages/{package}', [PackageController::class, 'destroy'])->name('packages.destroy');
 });
 
 // QA v2 S-01: the partner dashboard represents an authenticated area and
