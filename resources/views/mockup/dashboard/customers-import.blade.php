@@ -21,15 +21,42 @@
 
         <div class="rounded-xl border border-white/10 bg-[#0B0F24] p-6">
             <h2 class="font-bold mb-4">2. Unggah file</h2>
-            <form action="#" onsubmit="return false">
+
+            @if ($errors->any())
+                <div class="mb-5 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+                    @foreach ($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
+
+            @if (session('import_summary'))
+                @php $summary = session('import_summary'); @endphp
+                <div class="mb-5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">
+                    {{ $summary['created'] }} pelanggan berhasil diimpor.
+                </div>
+                @if (count($summary['errors']))
+                    <div class="mb-5 rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-300">
+                        <p class="font-semibold mb-2">{{ count($summary['errors']) }} baris dilewati:</p>
+                        <ul class="list-disc list-inside space-y-1">
+                            @foreach ($summary['errors'] as $rowError)
+                                <li>{{ $rowError }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            @endif
+
+            <form method="POST" action="{{ route('customers.import.store') }}" enctype="multipart/form-data">
+                @csrf
                 <label for="csv-file" class="block border-2 border-dashed border-white/15 rounded-xl py-14 text-center cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition">
                     <span class="block text-3xl mb-3">⬆</span>
                     <span class="block font-semibold">Seret file ke sini atau klik untuk memilih</span>
                     <span class="block text-gray-500 text-sm mt-1">Format .csv, maksimal 5 MB</span>
-                    <input id="csv-file" type="file" accept=".csv" class="hidden">
+                    <input id="csv-file" name="csv_file" type="file" accept=".csv" required class="hidden">
                 </label>
                 <p id="csv-filename" class="hidden text-sm text-gray-300 mt-3"></p>
-                <button id="csv-import-btn" type="button" onclick="mockupToast('Impor CSV belum tersedia di mockup ini')" class="hidden mt-4 h-11 px-5 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">Impor</button>
+                <button id="csv-import-btn" type="submit" class="mt-4 h-11 px-5 rounded-lg bg-indigo-600 hover:bg-indigo-500 font-semibold transition">Impor</button>
             </form>
         </div>
     </div>

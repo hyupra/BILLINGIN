@@ -1,6 +1,7 @@
 <?php
 
 use App\Modules\Customer\Http\Controllers\CustomerController;
+use App\Modules\Customer\Http\Controllers\CustomerImportController;
 use App\Modules\Master\Http\Controllers\PackageController;
 use App\Modules\Master\Http\Controllers\RouterController;
 use Illuminate\Support\Facades\Route;
@@ -88,6 +89,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/mockup/dashboard/customers/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
     Route::put('/mockup/dashboard/customers/{customer}', [CustomerController::class, 'update'])->name('customers.update');
     Route::delete('/mockup/dashboard/customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+
+    Route::get('/mockup/dashboard/customers-import', [CustomerImportController::class, 'create'])->name('customers.import.create');
+    Route::post('/mockup/dashboard/customers-import', [CustomerImportController::class, 'store'])->name('customers.import.store');
 });
 
 // QA v2 S-01: the partner dashboard represents an authenticated area and
