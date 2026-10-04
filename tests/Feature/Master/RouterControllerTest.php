@@ -5,6 +5,7 @@ use App\Modules\Master\Services\RouterConnectionResult;
 use App\Modules\Master\Services\RouterConnectionTester;
 use App\Modules\Platform\Models\Tenant;
 use App\Modules\Identity\Models\User;
+use App\Support\Tenancy\TenantContext;
 use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 
 beforeEach(fn () => $this->withoutMiddleware(PreventRequestForgery::class));
@@ -44,6 +45,7 @@ test('tenant B gets a 404 editing or deleting tenant A router by ID', function (
     $userB = User::factory()->create(['tenant_id' => $tenantB->id]);
 
     $this->actingAs(User::factory()->create(['tenant_id' => $tenantA->id]));
+    TenantContext::apply($tenantA->id, false); // RLS block predicate needs SESSION_CONTEXT set for this direct Eloquent create
     $routerA = Router::factory()->create(['tenant_id' => $tenantA->id]);
 
     $this->actingAs($userB)->get(route('routers.edit', $routerA))->assertNotFound();
@@ -54,6 +56,7 @@ test('tenant B gets a 404 editing or deleting tenant A router by ID', function (
 test('test-connection endpoint rejects a blocked host without calling the tester twice or leaking a 500', function () {
     $tenant = Tenant::factory()->create();
     $user = User::factory()->create(['tenant_id' => $tenant->id]);
+    TenantContext::apply($tenant->id, false); // RLS block predicate needs SESSION_CONTEXT set for this direct Eloquent create
     $router = Router::factory()->create(['tenant_id' => $tenant->id, 'host' => '127.0.0.1']);
 
     $response = $this->actingAs($user)->postJson(route('routers.test-connection', $router));
@@ -69,6 +72,7 @@ test('test-connection endpoint reports reachable using an injected fake connecto
 
     $tenant = Tenant::factory()->create();
     $user = User::factory()->create(['tenant_id' => $tenant->id]);
+    TenantContext::apply($tenant->id, false); // RLS block predicate needs SESSION_CONTEXT set for this direct Eloquent create
     $router = Router::factory()->create(['tenant_id' => $tenant->id, 'host' => '203.0.113.10']);
 
     $response = $this->actingAs($user)->postJson(route('routers.test-connection', $router));
